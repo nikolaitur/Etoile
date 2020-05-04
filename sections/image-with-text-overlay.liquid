@@ -1,34 +1,55 @@
 <section id="image-{{ section.id }}" class="image-with-text-overlay index-section" data-section-id="{{ section.id }}" data-section-type="image-section">
-  <div class="desktop-12 tablet-6 mobile-3">
-    {%- if section.settings.image -%}
-      <div class="image-wrapper lazyload lazyload-fade" data-bgset="{% include 'bgset', image: section.settings.image %} {% unless section.settings.full_width %}row{% endunless %}" data-sizes="auto">
-        <div class="image-overlay">
-          <h2>{{ section.settings.heading }}</h2>
-          <p>{{ section.settings.subheading_text }}</p>
-          {% if section.settings.link != blank and section.settings.button_text != blank %}
-            <a class="button" href="{{ section.settings.link }}">{{ section.settings.button_text }}</a>
-      		{% endif %}
+  <div class="desktop-12 tablet-6 mobile-3" style="{% if section.settings.section_link %}cursor: pointer;{% endif %}">
+      {%- if section.settings.image -%}
+        <div class="image-wrapper lazyload lazyload-fade" data-bgset="{% include 'bgset', image: section.settings.image %} {% unless section.settings.full_width %}row{% endunless %}" data-sizes="auto">
+          <div class="image-overlay">
+            <h2>{{ section.settings.heading }}</h2>
+            <p>{{ section.settings.subheading_text }}</p>
+            {% if section.settings.link != blank and section.settings.button_text != blank %}
+              <a class="button" href="{{ section.settings.link }}">{{ section.settings.button_text }}</a>
+            {% endif %}
+          </div>
         </div>
-      </div>
-    {%- else -%}
-      <div class="image-wrapper {% unless section.settings.full_width %}row{% endunless %}">
-        <div class="onboard plax-placehold">
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        </div>
-        <div class="image-overlay">
-          <h2>{{ section.settings.heading }}</h2>
-          <p>{{ section.settings.subheading_text }}</p>
+      {%- else -%}
+        <div class="image-wrapper {% unless section.settings.full_width %}row{% endunless %}">
+          <div class="onboard plax-placehold">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+          <div class="image-overlay">
+            <h2>{{ section.settings.heading }}</h2>
+            <p>{{ section.settings.subheading_text }}</p>
 
-          {% if section.settings.link != blank and section.settings.button_text != blank %}
-            <a class="button" href="{{ section.settings.link }}">{{ section.settings.button_text }}</a>
-      		{% endif %}
+            {% if section.settings.link != blank and section.settings.button_text != blank %}
+              <a class="button" href="{{ section.settings.link }}">{{ section.settings.button_text }}</a>
+            {% endif %}
+          </div>
         </div>
-      </div>
-    {%- endif -%}
+      {%- endif -%}
+    
   </div>
 </section>
 
 <style>
+  #image-{{ section.id }}.image-with-text-overlay .image-overlay {
+    {% assign button_position = section.settings.button_position %}
+    {% if button_position == 'top-left' or button_position == 'top-center' or button_position == 'top-right' %}
+      top: 5%;
+    {% elsif button_position == 'mid-left' or button_position == 'mid-center' or button_position == 'mid-right' %}
+      top: 45%;
+    {% else %}
+      top: auto;
+      bottom: 5%;
+    {% endif %}
+    {% if button_position == 'top-left' or button_position == 'mid-left' or button_position == 'bottom-left' %}
+      text-align: left;
+    {% elsif button_position == 'top-center' or button_position == 'mid-center' or button_position == 'bottom-center' %}
+      text-align: center;
+    {% else %}
+      text-align: right;
+    {% endif %}
+    padding-left: 5%;
+    padding-right: 5%;
+  }
   #image-{{ section.id }}.image-with-text-overlay .image-overlay h2 {
     font-size: {{ section.settings.heading_font_size }}px;
     font-weight: {{ section.settings.heading_font_weight }};
@@ -48,6 +69,11 @@
     opacity: 1;
   }
 </style>
+<script>
+  $(document).on('click', '#image-{{ section.id }}', function(){
+    document.location.href = '{{ section.settings.section_link }}';
+  });
+</script>
 {% schema %}
 {
   "name": "Image with text overlay",
@@ -165,9 +191,57 @@
      "info": "Visible only if a link is chosen"
     },
     {
+      "type": "select",
+      "id": "button_position",
+      "label": "Button Position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "mid-left",
+          "label": "Middle Left"
+        },
+        {
+          "value": "mid-center",
+          "label": "Middle Center"
+        },
+        {
+          "value": "mid-right",
+          "label": "Middle Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ]
+    },
+    {
       "type": "url",
       "id": "link",
       "label": "Button link"
+    },
+    {
+      "type": "url",
+      "id": "section_link",
+      "label": "Section link"
     },
     {
       "type": "color",

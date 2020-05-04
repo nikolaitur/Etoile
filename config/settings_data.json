@@ -2466,8 +2466,10 @@
           "subheading_font_size": 16,
           "subheading_font_weight": "400",
           "subheading_text_color": "#000",
-          "button_text": "",
+          "button_text": "Button",
+          "button_position": "mid-center",
           "link": "#",
+          "section_link": "shopify:\/\/collections\/all",
           "button_text_color": "#fff",
           "button_color": "#000"
         }
