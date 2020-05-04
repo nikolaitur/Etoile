@@ -1,0 +1,47 @@
+<ul>
+  {% if settings.facebook_url != blank %}
+    <li>
+      <a href="{{ settings.facebook_url }}" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.instagram_id != blank %}
+    <li>
+      <a href="//instagram.com/{{ settings.instagram_id }}" target="_blank"><i class="fa fa-instagram fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.twittername != blank %}
+    <li>
+      <a href="{{ settings.twittername }}" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.pinterest_url != blank %}
+    <li>
+      <a href="{{ settings.pinterest_url }}" target="_blank"><i class="fa fa-pinterest fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.tumblr_url != blank %}
+    <li>
+      <a href="{{ settings.tumblr_url }}" target="_blank"><i class="fa fa-tumblr fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.youtube_url != blank %}
+    <li>
+      <a href="{{ settings.youtube_url }}" target="_blank"><i class="fa fa-youtube fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.googleplus_url != blank %}
+    <li>
+      <a href="{{ settings.googleplus_url }}" target="_blank"><i class="fa fa-google-plus-official fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.snapchat_id != blank %}
+    <li>
+      <a href="//snapchat.com/add/{{ settings.snapchat_id }}" target="_blank"><i class="fa fa-snapchat-ghost fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+  {% if settings.weibo_id != blank %}
+    <li>
+      <a href="//weibo.com/{{ settings.weibo_id }}" target="_blank"><i class="fa fa-weibo fa-2x" aria-hidden="true"></i></a>
+    </li>
+  {% endif %}
+</ul>

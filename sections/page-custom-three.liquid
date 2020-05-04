@@ -1,0 +1,1362 @@
+{% include 'custom-content' %}
+
+{% schema %}
+{
+  "name": "Custom page three",
+  "max_blocks": 40,
+  "settings": [
+    {
+      "type": "range",
+      "id": "section_spacing",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Space between each block",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 13,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "page_title",
+      "name": "Page Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Heading alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "block_padding",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "px",
+          "label": "Add padding to the top and bottom of content within this block",
+          "default": 15
+        }
+      ]
+    },
+    {
+      "type": "page_content",
+      "name": "Page Content",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width",
+          "min": 50,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Content width less than 100% width will center on the page",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "block_padding",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "px",
+          "label": "Add padding to the top and bottom of content within this block",
+          "default": 15
+        }
+      ]
+    },
+    {
+      "type": "page_contact_form",
+      "name": "Contact Form",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Contact Us"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Heading alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width",
+          "min": 50,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Content width less than 100% width will center on the page",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "block_padding",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "px",
+          "label": "Add padding to the top and bottom of content within this block",
+          "default": 15
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_first_name",
+          "label": "Show first name",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_last_name",
+          "label": "Show last name",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_company_name",
+          "label": "Show company name",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_address",
+          "label": "Show address",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_website_url",
+          "label": "Show website url",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_phone",
+          "label": "Show phone number",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_subject",
+          "label": "Show subject",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Custom Field One"
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_custom_field_one",
+          "label": "Show custom field one",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "cf_custom_field_one",
+          "label": "Placeholder",
+          "default": "Custom Field One"
+        },
+        {
+          "type": "select",
+          "id": "cf_custom_field_one_type",
+          "label": "Type",
+          "default": "input",
+          "options": [
+            {
+              "value": "textarea",
+              "label": "Multiple line text"
+            },
+            {
+              "value": "input",
+              "label": "Single line text"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Custom Field Two"
+        },
+        {
+          "type": "checkbox",
+          "id": "cf_show_custom_field_two",
+          "label": "Show custom field two",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "cf_custom_field_two",
+          "label": "Placeholder",
+          "default": "Custom Field Two"
+        },
+        {
+          "type": "select",
+          "id": "cf_custom_field_two_type",
+          "label": "Type",
+          "default": "input",
+          "options": [
+            {
+              "value": "textarea",
+              "label": "Multiple line text"
+            },
+            {
+              "value": "input",
+              "label": "Single line text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Accordion"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Heading alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width",
+          "min": 50,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Content width less than 100% width will center on the page",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "block_padding",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "px",
+          "label": "Add padding to the top and bottom of content within this block",
+          "default": 15
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_1",
+          "label": "Item 1 Heading",
+          "default": "Item 1"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_1",
+          "label": "Item 1 Content",
+          "default": "<p>Description and content for Item 1.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_2",
+          "label": "Item 2 Heading",
+          "default": "Item 2"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_2",
+          "label": "Item 2 Content",
+          "default": "<p>Description and content for Item 2.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_3",
+          "label": "Item 3 Heading",
+          "default": "Item 3"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_3",
+          "label": "Item 3 Content",
+          "default": "<p>Description and content for Item 3.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_4",
+          "label": "Item 4 Heading",
+          "default": "Item 4"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_4",
+          "label": "Item 4 Content",
+          "default": "<p>Description and content for Item 4.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_5",
+          "label": "Item 5 Heading",
+          "default": "Item 5"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_5",
+          "label": "Item 5 Content",
+          "default": "<p>Description and content for Item 5.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_6",
+          "label": "Item 6 Heading",
+          "default": "Item 6"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_6",
+          "label": "Item 6 Content",
+          "default": "<p>Description and content for Item 6.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_7",
+          "label": "Item 7 Heading",
+          "default": "Item 7"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_7",
+          "label": "Item 7 Content",
+          "default": "<p>Description and content for Item 7.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_8",
+          "label": "Item 8 Heading",
+          "default": "Item 8"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_8",
+          "label": "Item 8 Content",
+          "default": "<p>Description and content for Item 8.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_9",
+          "label": "Item 9 Heading",
+          "default": "Item 9"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_9",
+          "label": "Item 9 Content",
+          "default": "<p>Description and content for Item 9.</p>"
+        },
+        {
+          "type": "text",
+          "id": "ac_heading_10",
+          "label": "Item 10 Heading",
+          "default": "Item 10"
+        },
+        {
+          "type": "richtext",
+          "id": "ac_content_10",
+          "label": "Item 10 Content",
+          "default": "<p>Description and content for Item 10.</p>"
+        }
+      ]
+    },
+    {
+      "type": "rich_text",
+      "name": "Rich Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "rt_heading",
+          "label": "Heading",
+          "default": "Welcome"
+        },
+        {
+          "type": "richtext",
+          "id": "rt_text",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width",
+          "min": 50,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Content width less than 100% width will center on the page",
+          "default": 100
+        }
+      ]
+    },
+    {
+      "type": "slideshow",
+      "name": "Slideshow",
+      "limit": 1,
+      "settings": [
+      {
+          "type": "paragraph",
+          "content": "This block controls the on page position and controls of a slideshow, slideshow image blocks must be added or this section will remain empty."
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Enable full width"
+        },
+        {
+          "type":      "range",
+          "id":        "slider_speed",
+          "min":       3,
+          "max":       10,
+          "step":      1,
+          "label":     "Slideshow speed (seconds)",
+          "default":   5
+        }
+      ]
+    },
+    {
+      "type": "slideshow_image",
+      "name": "Slideshow image",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "This block will show images if a Slideshow block has been selected."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "Caption Settings"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Add a title to your image"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Tell your brand's story through images"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Add a button",
+          "info": "Visible only if a link is chosen"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text align",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type":      "range",
+          "id":        "caption_horizontal_position",
+          "min":       2,
+          "max":       80,
+          "step":      2,
+          "unit":      "%",
+          "label":     "Caption horizontal position",
+          "default":   50,
+          "info":      "Distance from left of slide"
+        },
+        {
+          "type":      "range",
+          "id":        "caption_vertical_position",
+          "min":       2,
+          "max":       80,
+          "step":      2,
+          "unit":      "%",
+          "label":     "Caption vertical position",
+          "default":   50,
+          "info":      "Distance from bottom of slide"
+        },
+        {
+          "type": "color",
+          "id": "slide_text_color",
+          "label": "Heading and subheading",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "cta_color",
+          "label": "Button text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "cta_background",
+          "label": "Button background",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "caption_background",
+          "label": "Caption background",
+          "default": "transparent"
+        },
+        {
+          "type": "select",
+          "id": "caption_opacity",
+          "label": "Caption background opacity",
+          "options": [
+            {
+              "value": "0.1",
+              "label": "10%"
+            },
+            {
+              "value": "0.2",
+              "label": "20%"
+            },
+            {
+              "value": "0.3",
+              "label": "30%"
+            },
+            {
+              "value": "0.4",
+              "label": "40%"
+            },
+            {
+              "value": "0.5",
+              "label": "50%"
+            },
+            {
+              "value": "0.6",
+              "label": "60%"
+            },
+            {
+              "value": "0.7",
+              "label": "70%"
+            },
+            {
+              "value": "0.8",
+              "label": "80%"
+            },
+            {
+              "value": "0.9",
+              "label": "90%"
+            },
+            {
+              "value": "1.0",
+              "label": "100%"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image_text_overlay",
+      "name": "Image w/Text Overlay",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Enable full width"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_height",
+          "min": 200,
+          "max": 1000,
+          "step": 100,
+          "label": "Image height",
+          "default": 400
+        },
+        {
+          "type": "header",
+          "content": "Overlay Caption"
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position",
+          "min": 2,
+          "max": 98,
+          "step": 2,
+          "unit": "%",
+          "label": "Horizontal position",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "vertical_position",
+          "min": 2,
+          "max": 80,
+          "step": 2,
+          "unit": "%",
+          "label": "Vertical position",
+          "default": 20
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text align",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Overlay Heading"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Image with text overlay"
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading size",
+          "default": 26
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading weight",
+          "options": [
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading",
+          "default": "#000"
+        },
+        {
+          "type": "header",
+          "content": "Overlay Text"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Text",
+          "default": "<p>Use overlay text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
+        },
+        {
+          "type": "range",
+          "id": "subheading_font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Text size",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "subheading_color",
+          "label": "Text color",
+          "default": "#000"
+        },
+        {
+          "type": "header",
+          "content": "Overlay Button"
+        },
+        {
+          "id": "button_text",
+          "type": "text",
+          "label": "Button text",
+          "default": "Add a button",
+          "info": "Visible only if a link is chosen"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button background",
+          "default": "#000"
+        }
+      ]
+    },
+    {
+      "type": "image_blocks",
+      "name": "Image gallery",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Enable full width"
+        },
+        {
+          "type": "header",
+          "content": "Image One"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Link",
+          "info": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "heading_1",
+          "label": "Heading",
+          "default": "Our collections"
+        },
+        {
+          "type": "text",
+          "id": "button_1",
+          "label": "Button text",
+          "default": "Explore"
+        },
+        {
+          "type": "color",
+          "id": "heading_color_1",
+          "label": "Heading color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_color_1",
+          "label": "Button color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_1",
+          "label": "Button background",
+          "default": "#000"
+        },
+        {
+          "type": "range",
+          "id": "size_1",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "text_options_1",
+          "default": "on_image",
+          "options": [
+            {
+              "value": "on_image",
+              "label": "Over image"
+            },
+            {
+              "value": "below_image",
+              "label": "Below image"
+            }
+          ],
+          "label": "Text position"
+        },
+        {
+          "type": "range",
+          "id": "vertical_position_1",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Text over image vertical position",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position_1",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Text over image horizontal position",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "align_text_1",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Image Two"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Link",
+          "info": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "heading_2",
+          "label": "Heading",
+          "default": "Our collections"
+        },
+        {
+          "type": "text",
+          "id": "button_2",
+          "label": "Button text",
+          "default": "Explore"
+        },
+        {
+          "type": "color",
+          "id": "heading_color_2",
+          "label": "Heading color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_color_2",
+          "label": "Button color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_2",
+          "label": "Button background",
+          "default": "#000"
+        },
+        {
+          "type": "range",
+          "id": "size_2",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "text_options_2",
+          "default": "on_image",
+          "options": [
+            {
+              "value": "on_image",
+              "label": "Over image"
+            },
+            {
+              "value": "below_image",
+              "label": "Below image"
+            }
+          ],
+          "label": "Text position"
+        },
+        {
+          "type": "range",
+          "id": "vertical_position_2",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Text over image vertical position",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position_2",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Text over image horizontal position",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "align_text_2",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Image Three"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link_3",
+          "label": "Link",
+          "info": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "heading_3",
+          "label": "Heading",
+          "default": "Our collections"
+        },
+        {
+          "type": "text",
+          "id": "button_3",
+          "label": "Button text",
+          "default": "Explore"
+        },
+        {
+          "type": "color",
+          "id": "heading_color_3",
+          "label": "Heading color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_color_3",
+          "label": "Button color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_3",
+          "label": "Button background",
+          "default": "#000"
+        },
+        {
+          "type": "range",
+          "id": "size_3",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "text_options_3",
+          "default": "on_image",
+          "options": [
+            {
+              "value": "on_image",
+              "label": "Over image"
+            },
+            {
+              "value": "below_image",
+              "label": "Below image"
+            }
+          ],
+          "label": "Text position"
+        },
+        {
+          "type": "range",
+          "id": "vertical_position_3",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Text over image vertical position",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position_3",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Text over image horizontal position",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "align_text_3",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "featured_collection",
+      "name": "Featured Collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Featured collections"
+        },
+        {
+          "id": "collection",
+          "type": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "limit",
+          "min": 4,
+          "max": 30,
+          "step": 1,
+          "label": "Products shown",
+          "default": 4
+        }
+      ]
+    },
+    {
+      "type": "collection_list",
+      "name": "Collection List",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Featured collections"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "cl_collections_per_row",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "label": "Collections per row",
+          "default": 4
+        },
+        {
+          "type": "header",
+          "content": "Choose Collections"
+        },
+        {
+          "label": "Collection 1",
+          "id": "cl_collection_1",
+          "type": "collection"
+        },
+        {
+          "label": "Collection 2",
+          "id": "cl_collection_2",
+          "type": "collection"
+        },
+        {
+          "label": "Collection 3",
+          "id": "cl_collection_3",
+          "type": "collection"
+        },
+        {
+          "label": "Collection 4",
+          "id": "cl_collection_4",
+          "type": "collection"
+        }
+      ]
+    },
+    {
+      "type": "featured_video",
+      "name": "Featured Video",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Enable full width"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Featured video"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Heading alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "YouTube or Vimeo link",
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "newsletter_subscribe",
+      "name": "Newsletter Subscribe",
+      "settings": [
+        {
+          "type": "range",
+          "id": "max_width",
+          "min": 50,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Content width less than 100% width will center on the page",
+          "default": 100
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Subscribe to our newsletter"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading",
+          "default": "#000000"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "<p>Signup for our newsletter to stay up to date on sales and events.</p>"
+        },
+        {
+          "type": "range",
+          "id": "subheading_font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Subheading size",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "subheading_color",
+          "label": "Subheading",
+          "default": "#000"
+        },
+        {
+          "type": "paragraph",
+          "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "page_title"
+      },
+      {
+        "type": "page_content"
+      }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,537 @@
+<div id="page" class="custom-page-section" data-section-id="{{ section.id }}" data-section-type="custom-page-section">
+
+  {% for block in section.blocks %}
+
+  {% if block.type == 'slideshow_image' %}
+  {% continue %}
+  {% else %}
+    <section class="cp-{{ block.type }}-{{ block.id }}">
+      {% if block.settings.full_width %}<div class="gridlock-fluid"><div class="row">{% endif %}
+        <div class="{{ block.type }}-{{ block.id }} row" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+
+          {% case block.type %}
+
+          {% when 'page_title' %}
+            <div class="container-{{ block.id }}">
+              <div class="section-title desktop-12 tablet-6 mobile-3">
+                <h1>{{ page.title }}</h1>
+              </div>
+            </div>
+
+            <style>
+              .container-{{ block.id }} .section-title {
+                text-align: {{ block.settings.text_align }};
+              }
+              .container-{{ block.id }} .section-title h1 {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+              }
+            </style>
+
+          {% when 'page_content' %}
+            <div class="container-{{ block.id }}">
+              <div class="rte desktop-12 tablet-6 mobile-3">
+                {{ page.content }}
+              </div>
+            </div>
+
+            <style>
+              .container-{{ block.id }} .rte {
+                text-align: {{ block.settings.text_align }};
+              }
+            </style>
+
+          {% when 'page_contact_form' %}
+            <div class="container-{{ block.id }}">
+              {% if block.settings.heading != blank %}
+              <div class="section-title desktop-12 tablet-6 mobile-3">
+                <h3>{{ block.settings.heading | escape }}</h3>
+              </div>
+              {% endif %}
+              {% include 'custom-contact' type: block %}
+            </div>
+
+          {% when 'accordion' %}
+            <div class="container-{{ block.id }}">
+              {% if block.settings.heading != blank %}
+              <div class="section-title desktop-12 tablet-6 mobile-3">
+                <h3>{{ block.settings.heading }}</h3>
+              </div>
+              {% endif %}
+                <div class="rte-accordion desktop-12 tablet-6 mobile-3">
+                   {% for n in (1..10) %}
+                     {% assign heading = "ac_heading_" | append: n %}
+                     {% assign heading = block.settings[heading] | default: false %}
+
+                     {% assign content = "ac_content_" | append: n %}
+                     {% assign content = block.settings[content] | default: false %}
+
+                     {% if heading %}
+                       <div class="item">
+                         <input class="trigger" id="item-{{ n }}" type="checkbox" name="items" />
+                         <label class="accordion-label" for="item-{{ n }}"><span class="item-heading">{{ heading }}</span></label>
+                         <div class="item-content">
+                           {{ content }}
+                         </div>
+                       </div>
+                     {% endif %}
+                   {% endfor %}
+                 </div>
+            </div>
+
+            {% when 'rich_text' %}
+              <div class="container-{{ block.id }}">
+                {% if block.settings.rt_heading != blank %}
+                <div class="section-title desktop-12 tablet-6 mobile-3">
+                  <h3>{{ block.settings.rt_heading }}</h3>
+                </div>
+                {% endif %}
+                <div class="rte desktop-12 tablet-6 mobile-3">
+                  {{ block.settings.rt_text }}
+                </div>
+              </div>
+
+              <style>
+                .container-{{ block.id }} .rte {
+                  text-align: {{ block.settings.text_align }};
+                }
+              </style>
+
+          {% when 'slideshow' %}
+            <div class="container-{{ block.id }}">
+              <div class="flexslider index_Slider" id="Slideshow-{{ section.id }}" data-speed="{{ block.settings.slider_speed | times: 1000 }}">
+                <ul class="slides">
+                  {%- assign image_size = '2000x' -%}
+                  {% assign slide_images = section.blocks | where: "type", "slideshow_image" %}
+                  {% for slide in slide_images %}
+                    {% include 'slide' %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+          {% when 'image_blocks' %}
+            <div class="container-{{ block.id }}">
+
+              {% for n in (1..3) %}
+               {% assign c_link = "link_" | append: n %}
+               {% assign c_link = block.settings[c_link] | default: false %}
+               {% assign c_image = "image_" | append: n %}
+               {% assign c_image = block.settings[c_image] | default: false %}
+               {% assign c_heading = "heading_" | append: n %}
+               {% assign c_heading = block.settings[c_heading] | default: false %}
+               {% assign c_button = "button_" | append: n %}
+               {% assign c_button = block.settings[c_button] | default: false %}
+
+               <div class="homepage-promo desktop-4 tablet-2 mobile-3 promo-{{ n }}">
+                 <div class="promo-inner">
+                     {% if c_image != blank %}
+                     <a href="{{ c_link }}">
+                       {% include 'basic-responsive-image' | type: c_image %}
+                       <noscript>
+                         <img src="{{ c_image | img_url: '800x' }}" alt="{{ c_image.alt }}">
+                       </noscript>
+                     </a>
+                     {% else %}
+                       <div class="onboard">
+                         {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                       </div>
+                     {% endif %}
+                     <div class="caption">
+                       {% if c_heading != blank %}
+                         <div class="caption-content">
+                           <h3>{{ c_heading | escape }}</h3>
+                           {% if c_button != blank %}
+                           <span class="cta">
+                             <a href="{{ c_link }}">{{ c_button | escape }}</a>
+                           </span>
+                           {% endif %}
+                        </div>
+                       {% endif %}
+                     </div>
+                 </div>
+               </div>
+               <style>
+               {% assign text_options = "text_options_" | append: n %}
+               {% assign text_options = block.settings[text_options] | default: false %}
+               {% assign vertical_position = "vertical_position_" | append: n %}
+               {% assign vertical_position = block.settings[vertical_position] | default: false %}
+               {% assign horizontal_position = "horizontal_position_" | append: n %}
+               {% assign horizontal_position = block.settings[horizontal_position] | default: false %}
+               {% assign align_text = "align_text_" | append: n %}
+               {% assign align_text = block.settings[align_text] | default: false %}
+               {% assign button_color = "button_color_" | append: n %}
+               {% assign button_color = block.settings[button_color] | default: false %}
+               {% assign button_background = "button_background_" | append: n %}
+               {% assign button_background = block.settings[button_background] | default: false %}
+               {% assign color = "heading_color_" | append: n %}
+               {% assign color = block.settings[color] | default: false %}
+               {% assign size = "size_" | append: n %}
+               {% assign size = block.settings[size] | default: false %}
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo.promo-{{ n }} .promo-inner .caption-content h3 {
+                   color: {{ color }} !important;
+                   font-size: {{ size }}px !important;
+                 }
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo.promo-{{ n }} .promo-inner .caption-content {
+                   text-align: {{ align_text }};
+                 }
+                 {% if text_options == 'on_image' %}
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo.promo-{{ n }} .promo-inner .caption-content {
+                   position: absolute;
+                   bottom: {{ vertical_position }}%;
+                   left: {{horizontal_position }}%;
+                   {% if horizontal_position == 50 %}
+                   width: 100%;
+                   margin-left: -50%;
+                   text-align: center;
+                   {% endif %}
+                 }
+                 {% endif %}
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo.promo-{{ n }} .promo-inner .cta a {
+                   color: {{ button_color }};
+                   background: {{ button_background }};
+                 }
+                 {% if text_options == 'on_image' %}
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo.promo-{{ n }} .promo-inner .caption {
+                   position: absolute;
+                   width: 100%;
+                   height: 100%;
+                   top: 0;
+                 }
+                 {% else %}
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo .promo-inner .caption {
+                   margin-top: 10px;
+                   position: initial;
+                   top: initial;
+                   left: initial;
+                   width: initial;
+                   height: initial;
+                 }
+                 {% endif %}
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo .promo-inner {
+                   width: 100%;
+                 }
+                 .cp-{{ block.type }}-{{ block.id }} .homepage-promo {
+                   margin-top: 0;
+                 }
+                 @media screen and (max-width: 740px) {
+                   .cp-{{ block.type }}-{{ block.id }} .homepage-promo {
+                     margin-bottom: 15px;
+                   }
+                 }
+               </style>
+             {% endfor %}
+            {% if section.blocks.size == 0 %}
+            {% include 'no-blocks' %}
+            {% endif %}
+            </div>
+
+          {% when 'image_text_overlay' %}
+            <div class="container-{{ block.id }}">
+
+              {% if block.settings.link != blank and block.settings.button_text == blank %}<a class="section-promo-link" href="{{ block.settings.link }}">{% endif %}
+                <div class="image-with-text-overlay centered contained desktop-12 tablet-6 mobile-3">
+                  {% if block.settings.image %}
+                    <div class="background-image lazyload"
+                    data-bgset="{% include 'bgset', image: block.settings.image %}"
+                    data-sizes="auto"></div>
+                    <noscript>
+                      <div class="background-image" style="background-image: url({{ block.settings.image | img_url: '1024x' }});"></div>
+                    </noscript>
+                  {% else %}
+                    <div class="onboard">
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {% endif %}
+                  <div class="caption">
+                    {% if block.settings.heading != blank %}
+                      <h3>{{ block.settings.heading }}</h3>
+                    {% endif %}
+                    {% if block.settings.subheading != blank %}
+                      <p>{{ block.settings.subheading }}</p>
+                    {% endif %}
+                    {% if block.settings.button_text != blank and block.settings.link != blank %}
+                    <span class="cta">
+                      <a href="{{ block.settings.link }}">{{ block.settings.button_text }}</a>
+                    </span>
+                    {% endif %}
+                  </div>
+                </div>
+                {% if block.settings.link != blank and block.settings.button_text == blank %}</a>{% endif %}
+              <style>
+                .container-{{ block.id }} .caption h3 {
+                  font-size: {{ block.settings.heading_font_size }}px !important;
+                  color: {{ block.settings.heading_color }};
+                  font-weight: {{ block.settings.heading_font_weight }} !important;
+                }
+                .container-{{ block.id }} .caption p {
+                  font-size: {{ block.settings.subheading_font_size }}px !important;
+                  color: {{ block.settings.subheading_color }};
+                }
+                .container-{{ block.id }} .caption .cta a {
+                  background: {{ block.settings.button_color }};
+                  color: {{ block.settings.button_text_color }};
+                  margin-bottom: 0;
+                }
+                .container-{{ block.id }} .background-image {
+                  background-size: cover;
+                  background-position: center center;
+                  height: {{ block.settings.image_height }}px;
+                }
+                .container-{{ block.id }} .image-with-text-overlay {
+                  position: relative;
+                }
+                .container-{{ block.id }} .image-with-text-overlay .caption {
+                  padding: 15px;
+                  text-align: {{ block.settings.text_align }};
+                  position: absolute;
+                  bottom: {{ block.settings.vertical_position }}%;
+                  left: {{ block.settings.horizontal_position }}%;
+                  {% if block.settings.horizontal_position == 50 %}
+                  width: 100%;
+                  margin-left: -50%;
+                  text-align: center;
+                  {% endif %}
+                }
+            </style>
+            </div>
+
+          {% when 'collection_list' %}
+            <div class="container-{{ block.id }}">
+              {% if block.settings.heading != blank %}
+              <div class="section-title desktop-12 tablet-6 mobile-3">
+                <h3>{{ block.settings.heading | escape }}</h3>
+              </div>
+              {% endif %}
+
+              {%- case block.settings.cl_collections_per_row -%}
+              {%- when 2 -%}
+              {% assign column_width = 'desktop-6 tablet-6 mobile-half span-6' %}
+              {%- when 3 -%}
+              {% assign column_width = 'desktop-4 tablet-6 mobile-half span-4' %}
+              {%- when 4 -%}
+              {% assign column_width = 'desktop-3 tablet-6 mobile-half span-3' %}
+              {%- endcase -%}
+
+              {% for n in (1..4) %}
+              {% assign collection = "cl_collection_" | append: n %}
+              {% assign collection = collections[block.settings[collection]] | default: false %}
+              <div class="product-index {{ column_width }}" data-alpha="{{ collection.title }}">
+              {% if collection %}
+                {% include 'collection-grid-item' %}
+              {% else %}
+                {% capture current %}{{ forloop.index }}{% endcapture %}
+                {%- assign placeholder = 'collection-' | append: current -%}
+                <div class="collection-image ci onboard">
+                  <a href="#">
+                    {{ placeholder | placeholder_svg_tag }}
+                  </a>
+                </div>
+                <div class="collect-info">
+                  <p><a href="#">Sample collection {{ forloop.index }}</a></p>
+                </div>
+              {% endif %}
+              </div>
+              {% endfor %}
+              <style>
+                .container-{{ block.id }} {
+                  text-align: {{ block.settings.text_align }};
+                }
+              </style>
+            </div>
+
+          {% when 'newsletter_subscribe' %}
+            <div class="container-{{ block.id }}">
+
+              {% if block.settings.heading != blank %}
+              <div class="section-title desktop-12 tablet-6 mobile-3">
+                <h3>{{ block.settings.heading }}</h3>
+              </div>
+              {% endif %}
+              {% if block.settings.subheading != blank %}
+                <p>{{ block.settings.subheading }}</p>
+              {% endif %}
+
+              {% form 'customer', id: mailingForm %}
+                {{ form.errors | default_errors }}
+                {% if form.posted_successfully? %}
+                  <p class="form--success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+                {% else %}
+                  <div class="input-group password__input-group">
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    <input type="email"
+                      name="contact[email]"
+                      id="Email"
+                      class="input-group__field newsletter__input"
+                      value="{% if customer %}{{ customer.email }}{% endif %}"
+                      placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}"
+                      autocorrect="off"
+                      autocapitalize="off">
+                      <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe">
+                        <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+                      </button>
+                  </div>
+                {% endif %}
+              {% endform %}
+
+              <div class="section-icons">
+                {% include "social-icons" %}
+              </div>
+
+              <style>
+                .container-{{ block.id }} h3 {
+                  color: {{ block.settings.heading_color }} !important;
+                  text-align: center;
+                }
+                .container-{{ block.id }} p {
+                  text-align: center;
+                  color: {{ block.settings.subheading_color }} !important;
+                  font-size: {{ block.settings.subheading_font_size }}px !important;
+                  max-width: 60%;
+                  margin: 0 auto !important;
+                  line-height: 30px;
+                  padding-bottom: 20px !important;
+                }
+                .container-{{ block.id }} p a {
+                  color: {{ block.settings.subheading_color }} !important;
+                }
+                @media screen and (max-width: 740px) {
+                  .container-{{ block.id }} p {
+                    max-width: 100%;
+                  }
+                }
+                .section-icons ul {
+                  list-style: none;
+                  text-align: center;
+                }
+                .section-icons ul li {
+                  display: inline-block;
+                  float: none;
+                  margin: 10px 10px 0;
+                }
+              </style>
+
+            </div>
+
+          {% when 'featured_video' %}
+            <div class="container-{{ block.id }}">
+
+              {% if block.settings.heading != blank %}
+              <div class="section-title desktop-12 tablet-6 mobile-3">
+                <h3>{{ block.settings.heading }}</h3>
+              </div>
+              {% endif %}
+              <div class="videoWrapper desktop-12 tablet-6 mobile-3 contained">
+                {% if block.settings.video_url == blank %}
+                  <iframe src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                {% else %}
+                  {% if block.settings.video_url.type == "youtube" %}
+                    <iframe src="//www.youtube.com/embed/{{ block.settings.video_url.id }}?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                  {% endif %}
+                  {% if block.settings.video_url.type == "vimeo" %}
+                    <iframe src="//player.vimeo.com/video/{{ block.settings.video_url.id }}?byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                  {% endif %}
+                {% endif %}
+              </div>
+
+            </div>
+
+          {% when 'featured_collection' %}
+
+          <div class="container-{{ block.id }}">
+
+            {% if block.settings.heading != blank %}
+            <div class="section-title desktop-12 tablet-6 mobile-3">
+              <h3>{{ block.settings.heading }}</h3>
+            </div>
+            {% endif %}
+
+            {%- assign collection = collections[block.settings.collection] -%}
+            {%- assign prod_limit = block.settings.limit -%}
+
+            <div class="collection-carousel desktop-12 tablet-6 mobile-3" id="carousel-{{ block.id }}" data-slideout-ignore>
+              {% for product in collection.products limit: prod_limit %}
+                <div class="lazyOwl" id="product-listing-{{ product.id }}" data-alpha="{{ product.title }}" data-price="{{ product.price }}">
+                  {% include 'product-listing' %}
+                </div>
+              {% endfor %}
+            </div>
+
+            {% if block.settings.collection == blank %}
+              {% include 'onboard-product' %}
+            {% endif %}
+
+            <style>
+            .container-{{ block.id }} {
+              text-align: center;
+            }
+            </style>
+
+          </div>
+
+          {% endcase %}
+
+
+        <style>
+        /* Global CSS from each block type */
+        {% assign padding = block.settings.block_padding | divided_by: 2 %}
+        @media screen and (min-width: 981px) {
+            .container-{{ block.id }} {
+              {% if block.settings.max_width %}
+              max-width: {{ block.settings.max_width }}%;
+              {% endif %}
+
+              {% if block.settings.max_width < 100 %}
+              margin-left: auto;
+              margin-right: auto;
+              {% endif %}
+
+              {% if block.settings.block_padding %}
+              padding-top: {{ padding }}px;
+              padding-bottom: {{ padding }}px;
+              {% endif %}
+
+            }
+            .container-{{ block.id }}.no-padding {
+              padding-top: 0;
+              padding-bottom: 0;
+            }
+
+          }
+          .container-{{ block.id }} h3 {
+            text-align: {{ block.settings.text_align }};
+          }
+        </style>
+
+        </div>
+      {% if block.settings.full_width %}</div></div>{% endif %}
+    </section>
+  {% endif %}
+  {% endfor %}
+
+<style>
+  /* Section styles */
+  section div[class*="container-"] h3, section div[class*="container-"] h1 {
+    font-size: {{ section.settings.section_heading_size }}px !important;
+  }
+  {% assign margin = section.settings.section_spacing | divided_by: 2 %}
+  section[class*="cp-"] {
+    margin-top: {{ margin }}px;
+    padding-bottom: {{ margin }}px;
+    clear: left;
+  }
+
+  section[class*="cp-"]:first-of-type {
+    margin-top: 0;
+  }
+  section div[class*="container-"]:after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
+  #page { margin-bottom: 0;}
+</style>
+
+</div>

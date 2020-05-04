@@ -1,0 +1,153 @@
+<div id="shopping-cart" class="desktop-12 tablet-6 mobile-3">
+
+  <h2>{{ 'cart.general.title' | t }}</h2>
+  {% if cart.item_count == 0 %}
+    <p>{{ 'cart.general.empty' | t }}</p>
+  {% else %}
+  <script type="text/javascript">
+    function remove_item(id) {
+      document.getElementById('updates_'+id).value = 0;
+      document.getElementById('cartform').submit();
+    }
+  </script>
+  <form action="/cart" method="post" id="cartform">
+
+    <table>
+      <thead>
+        <tr>
+          <th>{{ 'cart.general.product' | t }}</th>
+          <th>{{ 'cart.general.price' | t }}</th>
+          <th style="text-align: center;">{{ 'cart.general.qty' | t }}</th>
+          <th style="text-align: center;">{{ 'cart.general.remove' | t }}</th>
+          <th>{{ 'cart.general.price' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart.items %}
+        <tr>
+          <td class="cart-item">
+            <div class="cart-image">
+              <a href="{{ item.url }}" title="{{ item.product.title | escape }}">
+                <img src="{{ item | img_url: '160x' }}" alt="{{ item.title | escape }}" />
+              </a>
+            </div>
+            <div class="cart-title">
+              {% if settings.vendor %}<p>{{ item.vendor }}</p>{% endif %}
+              <h4>{{ item.product.title }}</h4>
+              {%- unless item.variant.title contains 'Default' -%}
+                <p>
+                  {% for option in item.product.options %}
+                    {{ option }}: {{ item.variant.options[forloop.index0] }}<br/>
+                  {% endfor %}
+                </p>
+              {%- endunless -%}
+
+              {% assign property_size = item.properties | size %}
+              {% if property_size > 0 %}
+                {% for p in item.properties %}
+                  {% unless p.last == blank %}
+                    {{ p.first }}:
+
+                    {% comment %}
+                    Check if there was an uploaded file associated
+                    {% endcomment %}
+                    {% if p.last contains '/uploads/' %}
+                      <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                    {% else %}
+                      {{ p.last }}
+                    {% endif %}
+
+                    <br>
+                  {% endunless %}
+                {% endfor %}
+              {% endif %}
+
+            </div>
+          </td>
+          <td class="cart-price">
+            <span class="cart-item-price {% if item.original_price > item.final_price or item.variant.compare_at_price > item.final_price %}onsale{% endif %}" data-key="{{item.key}}" style="margin-right: 5px;">{{ item.final_price | money }}</span>
+            <del>{% if item.original_price > item.final_price %}{{ item.original_price | money }}{% elsif item.variant.compare_at_price > item.final_price %}{{ item.variant.compare_at_price | money }}{% endif %}</del>
+          </td>
+          <td class="cart-quantity">
+            <input type="text" class="cart-qty" size="4" name="updates[{{ item.id }}]" id="updates_{{ item.variant.id }}" value="{{ item.quantity }}" onfocus="this.select();"/>
+          </td>
+          <td class="cart-remove">
+            <a href="#" onclick="remove_item({{ item.variant.id }}); return false;"><i class="fa fa-times" aria-hidden="true"></i></a>
+          </td>
+          <td class="cart-total">
+            <h5>
+              <p><span class="cart-item-price money {% if item.original_price > item.final_price or item.variant.compare_at_price > item.final_price %}onsale{% endif %}" data-key="{{item.key}}" style="margin-right: 5px;">{{ item.final_line_price | money }}</span>
+                {% if item.original_line_price > item.final_line_price %}<del>{{ item.original_line_price | money }}</del>{% endif %}</p>
+            </h5>
+            {% if item.line_level_discount_allocations.size > 0 %}
+              {% for discount_allocation in item.line_level_discount_allocations %}
+                <p class="onsale"><i class="fa fa-tag"></i> {{ 'cart.general.discount_applied' | t }} {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})</p>
+              {% endfor %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if settings.cart_notes_enable %}
+    <div id="cart-notes" class="desktop-9 tablet-6 mobile-3">
+      <label for="note"><strong>{{ 'cart.general.note' | t }}</strong></label>
+      <textarea name="note" id="note" rows="5" cols="60">{{cart.note}}</textarea>
+    </div>
+    {% endif %}
+    <div id="continue-shopping" class="desktop-3 tablet-6 mobile-3">
+      <a href="{{ routes.account_collections_url }}">{{ 'cart.general.continue' | t }}</a>
+    </div>
+    <div id="basket-right" class="desktop-3 tablet-6 mobile-3">
+      <div class="subtotal">
+        <p class="title">{{ 'cart.general.subtotal' | t }}</p>
+        <p class="subtotal-price"><span class="cart-original-total money">{{ cart.items_subtotal_price | money }}</span></p>
+      </div>
+      <div class="discounts">
+        {%- if cart.cart_level_discount_applications != blank -%}
+          <p>{{ 'cart.general.discounts' | t }}</p>
+          <ul>
+            {%- for discount_application in cart.cart_level_discount_applications -%}
+              <li><i class="fa fa-tag"></i> {{ discount_application.title }}
+               (-{{ discount_application.total_allocated_amount | money }})</li>
+            {%- endfor -%}
+            </ul>
+        {%- else -%}
+          {% if cart.total_discounts > 0 %}
+            <div class="cart_savings onsale">
+              <p><em>{{ 'cart.general.savings' | t }}</em></p>
+              <p class="cart-savings-amount"><em>{{ cart.total_discounts | money }}</em></p>
+            </div>
+          {% endif %}
+        {%- endif -%}
+      </div>
+     <div class="total">
+        <h3 class="title">{{ 'cart.general.total' | t }}</h3>
+        <h3 class="total-price"><span class="cart-original-total money">{{ cart.total_price | money }}</span>
+        <span class="cart-total"></span></h3>
+      </div>
+      <input type="submit" name="update" id="update-cart" value="{{ 'cart.general.update' | t }}" class="button" />
+      <input type="submit" name="checkout" id="checkout" value="{{ 'cart.general.checkout' | t }}" class="button" />
+
+      {% for type in shop.enabled_payment_types %}
+      <img src="{{ type | payment_type_img_url }}" />
+      {% endfor %}
+
+      <div class="clear"></div>
+
+      {% if additional_checkout_buttons %}
+      {{ content_for_additional_checkout_buttons }}
+      {% endif %}
+
+      <div class="clear"></div>
+
+    </div>
+
+  </form>
+  {% endif %}
+
+  <div id="looked-at" class="desktop-12 tablet-6 mobile-3">
+    {% include 'recently-viewed' %}
+  </div>
+
+</div>

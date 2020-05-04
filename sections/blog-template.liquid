@@ -1,0 +1,226 @@
+<div id="page" data-section-id="{{ section.id }}" data-section-type="blog-section">
+
+  {% if section.settings.image != blank %}
+    <div class="collection-banner">
+      {% include 'basic-responsive-image', type: section.settings.image %}
+      <noscript>
+        <img src="{{ section.settings.image | img_url: '1024x' }}" alt="{{ section.settings.image.alt }}">
+      </noscript>
+    </div>
+  {% endif %}
+
+  <div id="content" class="row">
+    {% if settings.breadcrumb %}
+      {% include 'breadcrumb' %}
+    {% endif %}
+
+    <h1 class="page-title desktop-12 tablet-6 mobile-3">
+      {% if current_tags %}
+        {{ blog.title | link_to: blog.url }} &raquo; {{ current_tags.first }}
+      {% else %}
+        {{ blog.title }}
+      {% endif %}
+    </h1>
+
+    {% if section.settings.text != blank %}
+    <div class="desktop-12 tablet-6 mobile-3">
+      {{ section.settings.text }}
+    </div>
+    {% endif %}
+
+    {% paginate blog.articles by 18 %}
+    <div class="clear"></div>
+
+    {% if section.settings.tiled_blog_layout %}
+      <div class="desktop-12 tablet-6 mobile-3">
+        <div id="article-loop">
+          {% for article in blog.articles  %}
+            {% include 'article-loop' %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div id="blog-articles" class="desktop-9 tablet-6 mobile-3">
+        {% for article in blog.articles  %}
+          <div class="single-article">
+            <div class="article-body desktop-12 tablet-6 mobile-3">
+              <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+              {% if section.settings.show_author %}
+                <p class="posted author">{{ article.author }}</p>
+              {% endif %}
+              {% if section.settings.show_date %}
+                {% assign published_at = article.published_at | date: format: 'month_date_year' %}
+                <p class="posted">{{ 'blogs.article.posted_on_date_html' | t: date: published_at }}</p>
+              {% endif %}
+              <div class="article-content">
+                {% if article.image %}
+                  <a href="{{ article.url }}">
+                    {% include 'basic-responsive-image', type: article.image %}
+                    <noscript>
+                      <img src="{{ article.image | img_url: '800x' }}" alt="{{ sarticle.image.alt }}">
+                    </noscript>
+                  </a>
+                {% endif %}
+                <div class="clear"></div>
+                {% if article.excerpt == blank %}
+                  {{ article.content | strip_html | truncatewords: 30 }}
+                {% else %}
+                  {{ article.excerpt }}
+                {% endif %}
+              </div>
+              {% if article.tags.size > 0 %}
+                <ul>
+                  {% for tag in article.tags %}
+                    <li class="tags">
+                      <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+                        {{ tag }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              <div class="readmore">
+                <a href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div id="blog-sidebar" class="desktop-3 tablet-6 mobile-3">
+
+        {% for block in section.blocks %}
+          {% if block.type == 'tags' %}
+            <ul class="blog-tags">
+              <h3>{{ block.settings.title | escape }}</h3>
+              {% for tag in blog.all_tags %}
+              <li class="tags">
+                <a href="{{ routes.root_url }}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          <div class="clear"></div>
+
+          {% elsif block.type == 'social-icons' %}
+            <ul id="social-icons">
+              <h3>{{ block.settings.title | escape }}</h3>
+                {% if settings.facebook_url != blank %}<li><a href="{{ settings.facebook_url }}" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.instagram_id != blank %}<li><a href="//instagram.com/{{ settings.instagram_id }}" target="_blank"><i class="fa fa-instagram fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.twittername != blank %}<li><a href="{{ settings.twittername }}" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.pinterest_url != blank %}<li><a href="{{ settings.pinterest_url }}" target="_blank"><i class="fa fa-pinterest fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.tumblr_url != blank %}<li><a href="{{ settings.tumblr_url }}" target="_blank"><i class="fa fa-tumblr fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.youtube_url != blank %}<li><a href="{{ settings.youtube_url }}" target="_blank"><i class="fa fa-youtube fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.googleplus_url != blank %}<li><a href="{{ settings.googleplus_url }}" target="_blank"><i class="fa fa-google-plus-official fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.snapchat_id != blank %}<li><a href="//snapchat.com/add/{{ settings.snapchat_id }}" target="_blank"><i class="fa fa-snapchat-ghost fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+                {% if settings.weibo_id != blank %}<li><a href="//weibo.com/{{ settings.weibo_id }}" target="_blank"><i class="fa fa-weibo fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+            </ul>
+            <div class="clear"></div>
+
+          {% elsif block.type == 'image' %}
+
+
+
+          {% elsif block.type == 'collection' %}
+            <ul id="blog-collection">
+              <h3>{{ block.settings.title | escape }}</h3>
+              {%- assign collection = collections[block.settings.collection] -%}
+              {% for product in collection.products limit: 5 %}
+                <li class="blog-product" data-alpha="{{ collection.title }}" {{ block.shopify_attributes }}>
+                  {% include 'product-listing' %}
+                </li>
+              {% endfor %}
+            </ul>
+            <div class="clear"></div>
+
+          {% endif %}
+        {% endfor %}
+
+      </div>
+      <div class="clear"></div>
+    {% endif %}
+    {% include 'pagination' %}
+    {% endpaginate %}
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Blog page",
+    "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+    {
+        "id": "text",
+        "type": "richtext",
+        "label": "Text",
+        "default": "<p>Add some descriptive text to your Blog page.</p>"
+     },
+      {
+        "type": "checkbox",
+        "id": "tiled_blog_layout",
+        "label": "Show blog posts as tiles",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_date",
+        "label": "Show published date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_author",
+        "label": "Show author",
+        "default": true
+      }
+    ],
+	"blocks":[
+      {
+         "type":"tags",
+         "name":"Tags",
+		     "limit": 1,
+         "settings":[
+           {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Filter"
+           }
+         ]
+      },
+      {
+     "type":"social-icons",
+     "name":"Social icons",
+		 "limit": 1,
+         "settings":[
+           {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Connect with us"
+           }
+         ]
+      },
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        },
+           {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Featured"
+           }
+      ]
+    }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,53 @@
+{% for option in product.options %}
+
+  {% assign option_handle = option | handle %}
+  {% assign option_index = forloop.index0 %}
+
+  {% assign is_color = false %}
+  {% capture downcased_option %}{{ option | downcase }}{% endcapture %}
+  {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+
+
+  <div class="col-swatch">
+    <ul data-option-index="{{ option_index }}" class="{{ option_handle }} options">
+    {% assign values = '' %}
+    {% for variant in product.variants %}
+      {% assign value = variant.options[option_index] %}
+      {% capture wrapped_value %},{{ value }},{% endcapture %}
+      {% unless values contains wrapped_value %}
+      <li data-option-title="{{ value | escape }}" {% if variant.featured_media %}data-href="{{ variant.featured_media | img_url: 'large' }}" {% endif %}class="color {{ value | handle }}">
+        <span style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ value | handle | append: '.png' | asset_url }})"></span>
+      </li>
+      {% capture values %}{{ values }}{{ wrapped_value }}{% endcapture %}
+      {% endunless %}
+    {% endfor %}
+    </ul>
+  </div><!-- .swatch -->
+
+  {% endif %}
+
+{% endfor %}
+
+{% unless settings.secondary_images_hover == 'image_flip' %}
+  <script>
+    $('#product-listing-{{ product.id }} .col-swatch li').each(function(){
+
+      var Original = $('#product-listing-{{ product.id }} .prod-image img').attr('data-original');
+
+      $(this).hover(function() {
+        var newImage = $(this).attr('data-href');
+
+        $( '#product-listing-{{ product.id }} .prod-image img' ).attr({
+          srcset: newImage
+        });
+
+        return false;
+      },
+      function(){
+        $( '#product-listing-{{ product.id }} .prod-image img' ).attr({
+          srcset: Original
+        });
+      });
+    });
+  </script>
+{% endunless %}

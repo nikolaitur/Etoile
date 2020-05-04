@@ -1,0 +1,103 @@
+{% if section.settings.show_product_recommendations %}
+<div class="desktop-12 tablet-6 span-12 mobile-3" id="related" data-aos="{{ settings.scroll_animation }}" data-section-type="related-products-section" data-per-row="{{ section.settings.products_per_row }}">
+  <div class="row grid_wrapper">
+    <div class="product-recommendations" data-product-id="{{ product.id }}" data-base-url="{{ routes.product_recommendations_url }}" data-limit="{{ section.settings.products_shown }}">
+    {%- if recommendations.performed -%}
+      {%- if recommendations.products_count > 0 -%}
+        <div class="section-title lines desktop-12 tablet-6 mobile-3"><h2>{{ section.settings.product_recommendations_heading }}</h2></div>
+        <div class="product-carousel">
+          {%- for product in recommendations.products -%}
+            <div class="lazyOwl product product-index">
+              {% include 'product-listing' %}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- else  -%}
+      <div data-product-id="{{ product.id }}" data-section-id="{{ section.id }}" data-section-type="product-recommendations"></div>
+    {%- endif -%}
+    </div>
+  </div>
+  <style>
+    .product-carousel {
+      opacity: 0;
+    }
+  </style>
+</div>
+{% endif %}
+
+{% javascript %}
+  var loadProductRecommendationsIntoSection = function() {
+    // Look for an element with class 'product-recommendations'
+    var productRecommendationsSection = document.querySelector(".product-recommendations");
+
+    if (productRecommendationsSection === null) { return; }
+    // Read product id from data attribute
+    var recommended_url = productRecommendationsSection.dataset.baseUrl;
+    var productId = productRecommendationsSection.dataset.productId;
+
+    // Read limit from data attribute
+    var limit = productRecommendationsSection.dataset.limit;
+
+    // Build request URL
+    var requestUrl = recommended_url + '?section_id=product-recommendations&limit=' + limit + '&product_id=' + productId;
+
+    // Create request and submit it using Ajax
+    var request = new XMLHttpRequest();
+    request.open("GET", requestUrl);
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 300) {
+        var container = document.createElement("div");
+        container.innerHTML = request.response;
+        productRecommendationsSection.parentElement.innerHTML = container.querySelector(".product-recommendations").innerHTML;
+      }
+    };
+    request.send();
+  };
+  document.addEventListener("shopify:section:load", function(event) {
+    if (event.detail.sectionId === "product-recommendations") {
+      loadProductRecommendationsIntoSection();
+    }
+  });
+  // Fetching the recommendations on page load
+  loadProductRecommendationsIntoSection();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_recommendations",
+      "label": "Show dynamic recommendations",
+      "info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Products per row",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_shown",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "label": "Products shown",
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "product_recommendations_heading",
+      "label": "Heading",
+      "default": "You may also like"
+    }
+  ]
+}
+{% endschema %}

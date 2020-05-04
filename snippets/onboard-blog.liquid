@@ -1,0 +1,26 @@
+{% for i in (1..post_limit) %}
+<div class="article-index desktop-4 tablet-3 mobile-3{% cycle ' first', '', ' last' %}" id="article-{{ article.id }}" data-alpha="{{ article.title }}">   
+  <div class="article-info"> 
+    <div class="article-info-inner">
+      <h2><a href="#">Sample Blog post</a></h2>     
+      {% if section.settings.show_date %}
+      {% assign published_at = article.published_at | date: format: 'month_date_year' %}
+      <p class="posted">{{ 'now' | date: "%a, %b %d, %y" }}</p>
+	  {% endif %}
+      <div class="article-image onboard">
+        <a href="#" title="{{ article_title }}">
+          {{ 'image' | placeholder_svg_tag }}
+        </a>     
+      </div> 
+      <div class="clear"></div>
+      <div class="excerpt rte">
+        Adding featured blog posts to your home page will show the most recent posts from your stores blog.<br /> Here is some Sample content for blog post {{ forloop.index }}.
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+
+

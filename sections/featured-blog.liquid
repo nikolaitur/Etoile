@@ -1,0 +1,62 @@
+<section class="index-section homepage-section animate wow fadeIn no-fouc" data-section-id="{{ section.id }}" >
+  <div class="row">
+    <div id="homepage-blog">
+      {% if section.settings.title != blank %}
+        <div class="section-title lines desktop-12 tablet-6 mobile-3">
+          <h2>{{ section.settings.title | escape }}</h2>
+        </div>
+      {% endif %}
+      {%- assign blog = blogs[section.settings.blog] -%}
+      {%- assign post_limit = section.settings.post_limit -%}
+      <div id="article-loop">
+        {% if blog.articles.size == 0 %}
+          {% include 'onboard-blog' %}
+        {% else %}
+          {% for article in blog.articles limit: post_limit %}
+            {% include 'article-loop' %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+<div class="clear"></div>
+
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "id": "blog",
+      "type": "blog",
+      "label": "Blog"
+    },
+      {
+        "type":      "range",
+        "id":        "post_limit",
+        "min":       3,
+        "max":       12,
+        "step":      3,
+        "label":     "Posts shown",
+        "default":   3
+      }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog",
+      "settings": {
+        "blog": "News",
+        "post_limit": 3
+      }
+    }
+  ]
+}
+{% endschema %}

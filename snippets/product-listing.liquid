@@ -1,0 +1,88 @@
+<div class="product-index-inner">
+  {% if product.available %}
+    {% for col in product.collections %}
+      {% if col.handle == 'new' %}
+        <div class="new icn">{{ 'products.general.new' | t }}</div>
+      {% endif %}
+    {% endfor %}
+    {% if product.price < product.compare_at_price %}
+      <div class="sale-item icn">{{ 'products.general.sale' | t }}</div>
+    {% endif %}
+  {% else %}
+    <div class="so icn">{{ 'products.general.sold' | t }}</div>
+  {% endif %}
+</div>
+
+<div class="prod-image">
+  <a href="{{ product.url | within: collection }}" title="{{ product.title | escape }}">
+    <div class="reveal">
+      {%- if product.media.size < 1 -%}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {% else %}
+        {%- assign preview_image = product.featured_media.preview_image -%}
+        {%- assign second_image = product.media[1] -%}
+        {% assign image_box_ratio = preview_image.height | append: ".0" | times: 1 | divided_by: preview_image.width | times: 100 | append: "%" %}
+        {% assign img_url = preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+
+        <div class="box-ratio" style="padding-bottom: {{ image_box_ratio }};">
+          <img class="lazyload lazyload-fade {% if settings.image_flip and product.images.size > 1 %}first-image{% endif %}"
+            data-src="{{ img_url }}"
+            data-sizes="auto"
+            data-original="{{ preview_image | img_url: '500x' }}"
+            alt="{{ preview_image.alt | escape }}">
+        </div>
+
+        <noscript>
+          <img src="{{ preview_image | img_url: '500x' }}" alt="{{ preview_image.alt | escape }}">
+        </noscript>
+        {% if settings.secondary_images_hover == 'image_flip' and product.media.size > 1 and second_image.media_type == 'image' %}
+          <div class="hidden">
+            {% include 'basic-responsive-image', type: product.media[1] %}
+            <noscript>
+              <img src="{{ product.media[1] | img_url: '500x' }}" alt="{{ product.media[1].alt | escape }}">
+            </noscript>
+          </div>
+        {% elsif settings.secondary_images_hover == 'image_flip' and product.media.size > 1 and second_image.media_type != 'image' %}
+          <div class="hidden">
+            {% include 'basic-responsive-image', type: product.media[1].preview_image %}
+            <noscript>
+              <img src="{{ product.media[1].preview_image | img_url: '500x' }}" alt="{{ product.media[1].preview_image.alt | escape }}">
+            </noscript>
+          </div>
+        {% endif %}
+      {%- endif -%}
+    </div>
+  </a>
+
+  {% if template contains 'collection' or template == 'index' %}
+    {% if settings.quickview %}
+      <a rel="nofollow" data-fancybox="quick-view-{{ product.id }}" class="fancybox.ajax product-modal" href="{{ product.url }}?view=quick">{{ 'products.general.quick_view' | t }}</a>
+    {% endif %}
+  {% endif %}
+</div>
+
+<div class="product-info">
+  <div class="product-info-inner">
+    <a href="{{ product.url | within: collection }}">
+      {% if settings.vendor %}<span class="prod-vendor">{{ product.vendor }}</span>{% endif %}
+      <span class="prod-title">{{ product.title }}</span>
+    </a>
+
+    <div class="price">
+      {% if product.price < product.compare_at_price %}
+      <div class="onsale">{{ product.price | money }}</div>
+      <div class="was">{{ product.compare_at_price | money }}</div>
+      {% else %}
+      <div class="prod-price">{% if product.price_varies %} {{ 'products.general.from' | t }} {{ product.price_min | money }} - {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</div>
+      {% endif %}
+    </div>
+
+    {% if template contains 'collection' or template == 'index' %}
+    {% if settings.secondary_images_hover == 'alternate_colors' and product.media.size > 1 %}
+      <div class="prod-colors">
+        {% include 'product-listing-swatches' %}
+      </div>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>

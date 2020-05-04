@@ -1,0 +1,213 @@
+<section class="index-section homepage-section animate wow fadeIn no-fouc" data-section-id="{{ section.id }}" >
+{% if section.settings.full_width %}<div class="gridlock-fluid"><div class="row">{% endif %}
+  <div class="row">
+    {% for block in section.blocks %}
+      {% case block.settings.image_width %}
+      {% when '25%' %}
+      {%- assign image_size = '600x' -%}
+      {%- assign image_width = 'desktop-3 tablet-fourth' -%}
+      {% when '33%' %}
+      {%- assign image_size = '600x' -%}
+      {%- assign image_width = 'desktop-4 tablet-2' -%}
+      {% when '50%' %}
+      {%- assign image_size = '800x' -%}
+      {%- assign image_width = 'desktop-6 tablet-3' -%}
+      {% when '66%' %}
+      {%- assign image_size = '1200x' -%}
+      {%- assign image_width = 'desktop-8 tablet-4' -%}
+      {% when '75%' %}
+      {%- assign image_size = '1200x' -%}
+      {%- assign image_width = 'desktop-9 tablet-three-fourths' -%}
+      {% when '100%' %}
+      {%- assign image_size = '1920x' -%}
+      {%- assign image_width = 'desktop-12 tablet-6 contained' -%}
+      {% endcase %}
+
+     {%- assign img_url = block.settings.image | img_url: image_size -%}
+      <div class="homepage-promo {{ image_width }} mobile-3 promo-{{ block.id }}" {{ block.shopify_attributes }}>
+        <div class="promo-inner">
+          {% if block.settings.link != blank %}<a href="{{ block.settings.link }}">{% endif %}
+            {% if block.settings.image != blank %}
+              {% include 'basic-responsive-image', type: block.settings.image %}
+              <noscript>
+                <img src="{{ block.settings.image | img_url: '1024x' }}" alt="{{ block.settings.image.alt }}">
+              </noscript>
+            {% else %}
+              <div class="onboard">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {% endif %}
+            <div class="caption">
+              {% if block.settings.title_text != blank %}
+                <h3>{{ block.settings.title_text | escape }}</h3>
+              {% endif %}
+              {% if block.settings.hidden_text != blank %}
+                <p>{{ block.settings.hidden_text | escape }}</p>
+              {% endif %}
+            </div>
+          {% if block.settings.link != blank %}</a>{% endif %}
+        </div>
+      </div>
+
+      <style>
+        .homepage-promo.promo-{{ block.id }} .promo-inner h3 {
+          color: {{ block.settings.promo_color }};
+        }
+        .homepage-promo.promo-{{ block.id }} .promo-inner p {
+          color: {{ block.settings.hidden_color }};
+        }
+        .promo-{{ block.id }} .promo-inner { float: none; }
+      </style>
+
+      {% if section.blocks.size == 0 %}
+        {% include 'no-blocks' %}
+      {% endif %}
+    {% endfor %}
+
+  </div>
+  {% if section.settings.full_width %}</div></div>{% endif %}
+  <style>
+    #shopify-section-{{ section.id }} .homepage-promo .promo-inner h3 {
+      font-size: {{ section.settings.promo_size }}px;
+    }
+
+    #shopify-section-{{ section.id }} .homepage-promo .promo-inner p {
+      font-size: {{ section.settings.hidden_size }}px;
+    }
+    #shopify-section-{{ section.id }} .homepage-promo > a {
+      display: inline-block;
+      width: 100%;
+      padding: {{ settings.focus_border_weight }}px;
+    }
+  </style>
+</section>
+<div class="clear"></div>
+
+
+{% schema %}
+{
+  "name": "Gallery",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Enable full width",
+      "default": false
+    },
+    {
+      "type":      "range",
+      "id":        "promo_size",
+      "min":       12,
+      "max":       36,
+      "step":      1,
+      "unit":      "px",
+      "label":     "Heading size",
+      "default":   22
+    },
+    {
+      "type":      "range",
+      "id":        "hidden_size",
+      "min":       12,
+      "max":       36,
+      "step":      1,
+      "unit":      "px",
+      "label":     "Subheading size",
+      "default":   14
+    }
+	],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "select",
+        "id": "image_width",
+        "label": "Container width",
+        "default": "33%",
+        "options": [
+          {
+            "value":"25%",
+            "label":"25%"
+          },
+          {
+            "value":"33%",
+            "label":"33%"
+          },
+          {
+            "value":"50%",
+            "label":"50%"
+          },
+          {
+            "value":"66%",
+            "label":"66%"
+          },
+          {
+            "value":"75%",
+            "label":"75%"
+          },
+          {
+            "value":"100%",
+            "label":"100%"
+          }
+        ]
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link",
+        "info": "Optional"
+      },
+      {
+        "type": "text",
+        "id": "title_text",
+        "label": "Heading",
+        "default": "Our collections"
+      },
+       {
+        "type": "text",
+        "id": "hidden_text",
+        "label": "Shown on hover",
+        "default": "Shop now",
+        "info": "Shown on hover"
+       },
+      {
+        "type": "color",
+        "id": "promo_color",
+        "label": "Heading color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "hidden_color",
+        "label": "Subheading color",
+        "default": "#ffffff"
+      }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gallery",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

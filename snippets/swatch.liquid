@@ -1,0 +1,86 @@
+{% assign option_name = option.name | downcase %}
+
+{% assign color_swatch_options = "color, colour" | split: ", " %}
+
+{% assign current_option = "option" | append: option.position %}
+
+{% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
+
+<div class="swatch clearfix" data-option-index="{{ option.position }}" data-other-options='{{ other_options | json }}'>
+  <h5>{{ option.name }}</h5>
+
+  {% for value in option.values %}
+    {% assign image_url = value | handle | append: '.png' | asset_url %}
+
+    {% assign css_color = value | split: ' ' | last | handle %}
+
+    {% capture id %}swatch-{{ option.position }}-{{ value | handle }}{% endcapture %}
+
+    {% assign available = false %}
+
+    {% for variant in product.variants %}
+      {% unless variant.available %}
+        {% continue %}
+      {% endunless %}
+
+      {% unless variant[current_option] == value %}
+        {% continue %}
+      {% endunless %}
+
+      {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
+        {% continue %}
+      {% endunless %}
+
+      {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
+        {% continue %}
+      {% endunless %}
+
+      {% assign available = true %}
+    {% endfor %}
+
+    {% assign checked = "" %}
+
+    {% if current_variant[current_option] == value %}
+      {% assign checked = 'checked="checked"' %}
+    {% endif %}
+
+    {% capture radio_button %}
+      <input type="radio" id="{{ id }}" name="{{ option_name }}" value="{{ value | escape }}" data-position="{{ option.position }}" {{ checked }} tabindex="0" />
+    {% endcapture %}
+
+    {% capture sold_out_image %}
+      <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />
+    {% endcapture %}
+
+    {% capture regular_swatch %}
+      <div class="swatch-element {% unless available %}soldout{% endunless %}">
+        {{ radio_button }}
+
+        <label for="{{ id }}">
+          {{ value }}
+          {{ sold_out_image }}
+        </label>
+      </div>
+    {% endcapture %}
+
+    {% capture color_swatch %}
+      <div class="swatch-element color {% unless available %}soldout{% endunless %}">
+        <div class="tooltip">
+          {{ value }}
+        </div>
+
+        {{ radio_button }}
+
+        <label for="{{ id }}" style="background-color: {{ css_color }}; background-image: url({{ image_url }});">
+          {{ sold_out_image }}
+        </label>
+      </div>
+    {% endcapture %}
+
+    {% if color_swatch_options contains option_name %}
+      {{ color_swatch }}
+    {% else %}
+      {{ regular_swatch }}
+    {% endif %}
+  {% endfor %}
+</div>

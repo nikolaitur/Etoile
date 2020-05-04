@@ -1,0 +1,213 @@
+<ul id="sortme">
+{% if section.settings.sort_by %}
+  <li class="filter">
+    <select id="sort-by" class="styled-select">
+      <option value="manual">{{ 'collections.sorting.featured' | t }}</option>
+      <option value="price-ascending">{{ 'collections.sorting.price_ascending' | t }}</option>
+      <option value="price-descending">{{ 'collections.sorting.price_descending' | t }}</option>
+      <option value="title-ascending">{{ 'collections.sorting.az' | t }}</option>
+      <option value="title-descending">{{ 'collections.sorting.za' | t }}</option>
+      <option value="created-ascending">{{ 'collections.sorting.date_ascending' | t }}</option>
+      <option value="created-descending">{{ 'collections.sorting.date_descending' | t }}</option>
+      <option value="best-selling">{{ 'collections.sorting.best_selling' | t }}</option>
+    </select>
+  </li>
+<script>
+    Shopify.queryParams = {};
+    if (location.search.length) {
+      for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+        aKeyValue = aCouples[i].split('=');
+        if (aKeyValue.length > 1) {
+          Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+        }
+      }
+    }
+    jQuery('#sort-by')
+    .val('{{ collection.sort_by | default: collection.default_sort_by  }}')
+         .bind('change', function() {
+      Shopify.queryParams.sort_by = jQuery(this).val();
+      location.search = jQuery.param(Shopify.queryParams);
+    });
+    $(document).on('shopify:section:load', function(event) {
+      jQuery('#sort-by')
+      .val('{{ collection.sort_by | default: collection.default_sort_by  }}')
+           .bind('change', function() {
+        Shopify.queryParams.sort_by = jQuery(this).val();
+        location.search = jQuery.param(Shopify.queryParams);
+      });
+    });
+  </script>
+  {% endif %}
+
+{% if section.settings.sort_dropdown_a_check %}
+  <li class="filter">
+{% assign tags = section.settings.sort_a  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}
+    <select class="styled-select coll-filter alpha">
+      <option value="">{{ section.settings.filter_1_title }}</option>
+      {% for tag in tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+{% endif %}
+
+{% if section.settings.sort_dropdown_b_check %}
+  <li class="filter">
+{% assign tags = section.settings.sort_b  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}
+    <select class="styled-select coll-filter bravo">
+      <option value="">{{ section.settings.filter_2_title }}</option>
+      {% for tag in tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+{% endif %}
+
+{% if section.settings.sort_dropdown_c_check %}
+  <li class="filter">
+{% assign tags = section.settings.sort_c  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}
+    <select class="styled-select coll-filter charlie">
+      <option value="">{{ section.settings.filter_3_title }}</option>
+      {% for tag in tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+{% endif %}
+
+  {% if paginate.previous %}
+  <li class="pagiprev">
+    {{ '<i class="fa fa-caret-left"></i>' | link_to: paginate.previous.url }}
+  </li>
+  {% endif %}
+
+  <span class="pagination-count">
+  {{ paginate.current_page }} {{ 'general.pagination.of' | t }} {{ paginate.pages }}
+  </span>
+
+  {% if paginate.next %}
+  <li class="paginext">
+    {{ '<i class="fa fa-caret-right"></i>' | link_to: paginate.next.url }}
+  </li>
+  {% endif %}
+
+</ul>
+
+
+<script>
+  /* Product Tag Filters - Good for any number of filters on any type of collection pages */
+  /* Give you product tag filter select element a class of coll-filter */
+  /* Give your collection select a class of coll-picker */
+  /* Brought to you by Caroline Schnapp */
+ /* Product Tag Filters - Good for any number of filters on any type of collection page.
+     Give you product tag filter select element a class of coll-filter.
+     Give your collection select a class of coll-picker.
+     Brought to you by Caroline Schnapp. */
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+  jQuery('.coll-picker').change(function() {
+    if (jQuery(this).val()) {
+      location.href = '/collections/' + jQuery(this).val();
+    }
+    else {
+      location.href = '/collections/all';
+    }
+  });
+  var collFilters = jQuery('.coll-filter');
+  collFilters.change(function() {
+    delete Shopify.queryParams.page;
+    var newTags = [];
+    collFilters.each(function() {
+      if (jQuery(this).val()) {
+        newTags.push(jQuery(this).val());
+      }
+    });
+    {% if collection.handle %}
+    var newURL = '/collections/{{ collection.handle }}';
+    if (newTags.length) {
+      newURL += '/' + newTags.join('+');
+    }
+    var search = jQuery.param(Shopify.queryParams);
+    if (search.length) {
+      newURL += '?' + search;
+    }
+    location.href = newURL;
+    {% else %}
+    if (newTags.length) {
+      Shopify.queryParams.constraint = newTags.join('+');
+    }
+    else {
+      delete Shopify.queryParams.constraint;
+    }
+    location.search = jQuery.param(Shopify.queryParams);
+    {% endif %}
+  });
+
+  $(document).on('shopify:section:load', function(event) {
+Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+  jQuery('.coll-picker').change(function() {
+    if (jQuery(this).val()) {
+      location.href = '/collections/' + jQuery(this).val();
+    }
+    else {
+      location.href = '/collections/all';
+    }
+  });
+  var collFilters = jQuery('.coll-filter');
+  collFilters.change(function() {
+    delete Shopify.queryParams.page;
+    var newTags = [];
+    collFilters.each(function() {
+      if (jQuery(this).val()) {
+        newTags.push(jQuery(this).val());
+      }
+    });
+    {% if collection.handle %}
+    var newURL = '/collections/{{ collection.handle }}';
+    if (newTags.length) {
+      newURL += '/' + newTags.join('+');
+    }
+    var search = jQuery.param(Shopify.queryParams);
+    if (search.length) {
+      newURL += '?' + search;
+    }
+    location.href = newURL;
+    {% else %}
+    if (newTags.length) {
+      Shopify.queryParams.constraint = newTags.join('+');
+    }
+    else {
+      delete Shopify.queryParams.constraint;
+    }
+    location.search = jQuery.param(Shopify.queryParams);
+    {% endif %}
+  });
+  });
+</script>

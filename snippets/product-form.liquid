@@ -1,0 +1,95 @@
+{% assign call_to_action = 'products.product.add_to_cart' | t %}
+
+{% unless current_variant.available %}
+  {% assign call_to_action = 'products.product.sold_out' | t %}
+{% endunless %}
+
+{% form 'product', product, id: "AddToCartForm", class: "product_form", data-product-form:product_form_config %}
+
+  {%- if settings.show_multiple_currencies -%}
+    {% assign price = current_variant.price | money_with_currency %}
+    {% assign compare_price = current_variant.compare_at_price | money_with_currency %}
+  {%- else -%}
+    {% assign price = current_variant.price | money %}
+    {% assign compare_price = current_variant.compare_at_price | money %}
+  {%- endif -%}
+  <p id="product-price">
+    <span class="product-price" itemprop="price">
+      {{ price }}
+    </span>
+    {% if current_variant.compare_at_price > current_variant.price %}
+      <span class="was">
+        {{ compare_price }}
+      </span>
+    {% endif %}
+    <span class="was"></span>
+  </p><div class="clear"></div>
+
+  {% if product.options.size > 1 %}
+    <div class="select" {% if product.variants.size == 1 %}style="display: none;"{% endif %}>
+      <select id="{% if template == 'product.quick' %}qv-{% endif %}product-select-{{ product.id }}" name='id'>
+        {% for variant in product.variants %}
+          <option value="{{ variant.id }}" {% if variant == current_variant %}selected="selected"{% endif %}>
+            {{ variant.title }} - {{ variant.price | money }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    {% if section.settings.product_variants == 'swatches' %}
+      {% for option in product.options_with_values %}
+        {% include "swatch" %}
+      {% endfor %}
+    {% endif %}
+  {% elsif product.options.size == 1 and product.variants.size > 1 %}
+    <div class="select">
+      <label>{{ product.options[0] }}</label>
+      <select id="{% if template == 'product.quick' %}qv-{% endif %}product-select-{{ product.id }}" name='id'>
+        {% for variant in product.variants %}
+          <option data-sku="{{ variant.sku }}" value="{{ variant.id }}" {% if variant == current_variant %}selected="selected"{% endif %}>
+            {{ variant.title }} - {{ variant.price | money }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    {% if section.settings.product_variants == 'swatches' %}
+      {% for option in product.options_with_values %}
+        {% include 'swatch' %}
+      {% endfor %}
+    {% endif %}
+  {% else %}
+    <div class="what-is-it">
+      {% if product.options.first != 'Title' %}
+        <label>{{ product.options.first }}:</label>
+        {% for variant in product.variants %}
+          <span class="it-is">{{ variant.option1 | escape }}</span>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="product-variants"></div><!-- product variants -->
+    <input  type="hidden" id="{{ variant.id }}" name="id" data-sku="{{ variant.sku }}" value="{{ product.variants[0].id }}" />
+  {% endif %}
+
+
+  {% if section.settings.show_sku %}
+    <div class="sku">
+      <label style="line-height: 1.6em; display: inline-block;">{{ 'customer.order.details.sku' | t }}:</label> <span class="variant_sku">{{ current_variant.sku }}</span>
+    </div><div class="clear"></div>
+  {% endif %}
+  <div class="product-add">
+    {% if section.settings.show_quantity %}
+      <div class="qty-selection">
+        <h5>{{ 'products.product.quantity' | t }}</h5>
+        <a class="down quantity-control-down" field="quantity">-</a>
+          <input min="1" type="text" name="quantity" class="quantity" value="1" />
+        <a class="up quantity-control-up" field="quantity">+</a>
+      </div>
+    {% endif %}
+    <input id="addToCart" type="submit" name="button" class="add clearfix AddtoCart {% if section.settings.show_payment_button %} secondary-button{% endif %}" value="{{ call_to_action }}" {% unless current_variant.available %}disabled{% endunless %} />
+    {% if section.settings.show_payment_button and template != 'product.quick' %}
+     {{ form | payment_button }}
+    {% elsif settings.quick_show_payment_button and template == 'product.quick' %}
+     {{ form | payment_button }}
+    {% endif %}
+  </div>
+
+{% endform %}

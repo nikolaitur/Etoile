@@ -1,0 +1,136 @@
+<section class="homepage-section index-section" id="text-promo-{{ section.id }}" data-section-id="{{ section.id }}">
+
+  <div class="row">
+
+      {% if section.settings.title != blank %}
+      <div class="section-title desktop-12 tablet-6 mobile-3 lines"><h2>{{ section.settings.title | escape }}</h2></div>
+      {% endif %}
+
+    <div class="clear"></div>
+    {% case section.blocks.size %}
+    {% when 1 %}
+    {%- assign image_size = '900x' -%}
+    {%- assign column_width = 'desktop-8 desktop-push-2 tablet-4 tablet-push-1' -%}
+    {% when 2 %}
+    {%- assign image_size = '800x' -%}
+    {%- assign column_width = 'desktop-6 tablet-3' -%}
+    {% when 3 %}
+    {%- assign image_size = '500x' -%}
+    {%- assign column_width = 'desktop-4 tablet-2' -%}
+    {% endcase %}
+
+    {% for block in section.blocks %}
+      {%- assign img_url = block.settings.image | img_url: image_size -%}
+      <div class="homepage-text-promo {{ column_width }} mobile-3 text-promo-{{ block.id }}" {{ block.shopify_attributes }}>
+        {% if block.settings.link != blank %}<a href="{{ block.settings.link }}">{% endif %}
+          {% if block.settings.image != blank %}
+            {% include 'basic-responsive-image', type: block.settings.image %}
+            <noscript>
+              <img src="{{ block.settings.image | img_url: '800x' }}" alt="{{ block.settings.image.alt }}">
+            </noscript>
+          {% endif %}
+        {% if block.settings.link != blank %}</a>{% endif %}
+        <div class="text-promo-content">
+          {% if block.settings.title_text != blank %}
+            <h3>{{ block.settings.title_text | escape }}</h3>
+          {% endif %}
+          {% if block.settings.text != blank %}
+            <p>{{ block.settings.text }}</p>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+
+</section>
+
+<div class="clear"></div>
+
+
+<style>
+  #text-promo-{{ section.id }} .homepage-text-promo  { text-align: {{ section.settings.align_text }}; }
+</style>
+
+
+{% schema %}
+{
+    "name": "Text columns with images",
+	"max_blocks": 3,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Text columns with images"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          }
+        ]
+      }
+    ],
+	"blocks": [
+    {
+      "type": "text_block",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        },
+       {
+        "type": "text",
+        "id": "title_text",
+        "label": "Heading",
+        "default": "Our collections"
+       },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+      }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text columns with images",
+      "category": "Text",
+      "blocks": [
+          {
+            "type": "text_block"
+          },
+          {
+            "type": "text_block"
+          },
+          {
+            "type": "text_block"
+          }
+      ]
+    }
+  ]
+  }
+{% endschema %}

@@ -1,0 +1,133 @@
+<section class="index-section homepage-section animate wow fadeIn no-fouc" data-section-id="{{ section.id }}" >
+  <div class="row">
+    {% if section.settings.title != blank %}
+    <div class="section-title desktop-12 tablet-6 mobile-3 lines"><h2>{{ section.settings.title | escape }}</h2></div>
+    {% endif %}
+
+    {% case section.settings.grid %}
+      {% when 2 %}
+        {%- assign grid_item_width = 'desktop-6 tablet-3 mobile-half' -%}
+      {% when 3 %}
+        {%- assign grid_item_width = 'desktop-4 tablet-2 mobile-half' -%}
+      {% when 4 %}
+        {%- assign grid_item_width = 'desktop-3 tablet-2 mobile-half' -%}
+    {% endcase %}
+
+    <div id="collection-loop">
+	{% for block in section.blocks limit: section.blocks.size %}
+      {%- assign collection = collections[block.settings.collection] -%}
+      <div class="collection-index {{ grid_item_width }}" data-alpha="{{ collection.title }}" {{ block.shopify_attributes }}>
+        {% if block.settings.collection == blank %}
+        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        {%- assign placeholder = 'collection-' | append: current -%}
+          <div class="collection-image ci onboard">
+            <a href="#">
+              {{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}
+            </a>
+          </div>
+        <div class="collection-info">
+          <a href="{{ collection.url }}" title="{{ collection.title }}">
+            <p><a href="#">Sample collection {{ forloop.index }}</a></p>
+          </a>
+        </div>
+        {% else %}
+          {% include 'collection-grid-item' %}
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if section.blocks.size == 0 %}
+      {% include 'no-blocks' %}
+    {% endif %}
+
+  </div>
+  <style >
+    #collection-loop .collection-index .collection-image > a {
+      width: 100%;
+      display: inline-block;
+    }
+  </style>
+</section>
+<div class="clear"></div>
+
+{% if section.settings.title_position == 'below' %}
+<style>
+.collection-info { position: relative; top: initial; margin-top: 10px; padding: 0; background: transparent; }
+</style>
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Collection list",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Collection list"
+    },
+    {
+      "type":      "range",
+      "id":        "grid",
+      "min":       2,
+      "max":       4,
+      "step":      1,
+      "label":     "Collections per row",
+      "default":   3
+    },
+    {
+      "type": "select",
+      "id": "title_position",
+      "label": "Collections title position",
+      "options": [
+        {
+          "value": "below",
+          "label": "Below image"
+        },
+        {
+          "value": "floating",
+          "label": "Floating on image"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_count",
+      "label": "Show collections product count"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "category": "Collection",
+      "settings": {
+        "grid": 3
+      },
+      "blocks": [
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+
+  <meta charset="utf-8" />
+  {% include 'social-meta-tags' %}
+  <!-- Basic Page Needs
+================================================== -->
+
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+  {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}" />
+  {% endif %}
+  <link rel="canonical" href="{{ canonical_url }}" />
+
+  <!-- CSS
+================================================== -->
+
+  {{ 'stylesheet.css' | asset_url | stylesheet_tag }}
+  {{ 'queries.css' | asset_url | stylesheet_tag }}
+
+  <!-- JS
+================================================== -->
+
+  {{ '//ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js' | script_tag }}
+  {{ 'eventemitter3.min.js' | asset_url | script_tag }}
+
+  {{ 'theme.js' | asset_url | script_tag }}
+  {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+
+  <!--[if lt IE 9]>
+<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  {% if settings.favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+  {% endif %}
+
+  {% if template contains 'customers' %}
+    {{ "shopify_common.js" | shopify_asset_url | script_tag }}
+    {{ "customer_area.js"  | shopify_asset_url | script_tag }}
+  {% endif %}
+  {{ content_for_header }}
+  <script type="text/javascript">
+    new WOW().init();
+  </script>
+</head>
+<body class="gridlock {% if template contains 'product' %}product{% elsif template contains 'collection' %}collection{% else %}{{ template }}{% endif %}">
+
+<main id="panel" role="main">
+  <div class="page-wrap">
+    {% section 'header' %}
+    {% if template contains 'collection' %}
+      {% if collection.description contains '[banner]' %}
+        {% capture banner %}{{ collection.handle }}.jpg{% endcapture %}
+        {% capture alt %}{{ collection.title }}{% endcapture %}
+        <div class="collection-banner">
+          {% assign img_url = banner | file_img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+
+          <img class="lazyload lazyload-fade"
+            src="{{ banner | file_url }} "
+            data-src="{{ img_url }}"
+            data-sizes="auto"
+            alt="{{ alt }}">
+        </div>
+      {% endif %}
+    {% endif %}
+
+    <div class="content-wrapper">
+      {% if template == 'index' or template contains 'blog' or template contains 'list-collections' or template.suffix contains 'custom' %}
+        {{ content_for_layout }}
+      {% else %}
+        <div id="content" class="row">
+          {% if template != 'index' %}
+            {% if settings.breadcrumb %}
+              {% include 'breadcrumb' %}
+            {% endif %}
+          {% endif %}
+          {{ content_for_layout }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% section 'footer' %}
+  {% if settings.popup %}
+    {% include 'popup' %}
+  {% endif %}
+</main>
+{% section 'mobile-navigation' %}
+
+  <a href="#" class="scrollup"><i class="fa fa-angle-up fa-2x" aria-hidden="true"></i></a>
+  <div class="fancybox-wrapper"></div>
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=127142210767229";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  {% if settings.ajax_cart_method != 'page' %}
+    {% include 'ajax-cart-template' %}
+    <script>
+    jQuery(function($) {
+      ajaxifyShopify.init({
+        method: '{{ settings.ajax_cart_method }}',
+        wrapperClass: 'page-wrap',
+        formSelector: '#AddToCartForm',
+        addToCartSelector: '#addToCart',
+        cartCountSelector: '#item_count',
+        toggleCartButton: '.my-cart-link',
+        useCartTemplate: false,
+        btnClass: 'btn',
+        moneyFormat: {{ shop.money_format | json }},
+        disableAjaxCart: false,
+        enableQtySelectors: true
+      });
+    });
+    </script>
+  {% endif %}
+
+  <script>
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.minSize = 360;
+  </script>
+
+  <!-- Responsive Images -->
+  {{ 'ls.rias.min.js' | asset_url | script_tag }}
+  {{ 'ls.bgset.min.js' | asset_url | script_tag }}
+  {{ 'lazysizes.min.js' | asset_url | script_tag }}
+
+  <script>
+    document.documentElement.className =
+       document.documentElement.className.replace("no-js","js");
+  </script>
+
+ <!-- Fancybox JS -->
+ {{ 'jquery.fancybox.js' | asset_url | script_tag }}
+</body>
+</html>

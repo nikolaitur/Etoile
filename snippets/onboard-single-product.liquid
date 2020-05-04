@@ -1,0 +1,43 @@
+<div class="row" data-section-onboard>
+  <div class="section-title lines desktop-12 tablet-6 mobile-3">
+    <h2>
+      <a href="#">
+        Featured Product
+      </a>
+    </h2>
+  </div>
+  <div class="row">
+    <div class="featured-product-gallery desktop-5 tablet-3 mobile-3">
+      <div class="onboard">
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    </div>
+
+    <div class="featured-product-description desktop-5 tablet-3 mobile-3">
+      {% if section.settings.vendor %}
+        <h4>Product Vendor</h4>
+      {% endif %}
+      <h2>
+        <a href="#">
+          Your product's name
+        </a>
+      </h2>
+      <div class="rte">
+        This area is used to describe your product’s details. Tell customers about the look, feel, and style of your product. Add details on color, materials used, sizing, and where it was made.
+      </div>
+    </div>
+    <div class="featured-product-form desktop-2 tablet-3 mobile-3">
+      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <p id="product-price">
+          <span class="product-price" itemprop="price">
+            9.99</span>&nbsp;<span class="was">13.99
+          </span>
+        </p>
+        <br/>
+        <div class="product-add">
+          <input type="submit" name="button" class="add" value="Add to Cart" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

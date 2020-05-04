@@ -1,0 +1,14 @@
+<div class="share-icons">
+  <a title="{{ 'social.icons.facebook' | t }}" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}{% if template contains 'blog' or template == 'article' %}{{ article.url }}{% else %}{{ product.url }}{% endif %}" class="facebook" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a>
+  <a title="{{ 'social.icons.twitter' | t }}"  href="//twitter.com/home?status={{ shop.url | append: share_permalink }}{% if template contains 'blog' or template == 'article' %}{{ article.url }}{% else %}{{ product.url }}{% endif %} via @{{ settings.twittername }}" title="Share on Twitter" target="_blank" class="twitter"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a>
+
+  {% if template contains 'blog' or template contains 'article' %}
+    {% if article.image %}
+      <a title="{{ 'social.icons.pinterest' | t }}" target="blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}{{ article.url }}&amp;media={{ article.image.src | img_url: '10241024' | prepend: 'http:' }}" title="Pin This Article" class="pinterest"><i class="fa fa-pinterest fa-2x" aria-hidden="true"></i></a>
+    {% endif %}
+  {% endif %}
+
+  {% if template == 'collection' or template == 'product' or template == 'index' %}
+    <a title="{{ 'social.icons.pinterest' | t }}" target="blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}{{ product.url }}&amp;media={{ product.featured_media |img_url: '1024x1024' | prepend: 'http:' }}" title="Pin This Product" class="pinterest"><i class="fa fa-pinterest fa-2x" aria-hidden="true"></i></a>
+  {% endif %}
+</div>

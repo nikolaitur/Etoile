@@ -1,0 +1,74 @@
+    <li id="slide--{{ slide.id }}" data-slide-id="{{ slide.id }}" class="slide--{{ slide.id }} slide_image{% if block.settings.image == blank %} onboard{% endif %}" data-flexslider-index="{{ forloop.index0 }}" {{ slide.shopify_attributes }}>
+      {% if slide.settings.image == blank %}
+        {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+        {%- assign placeholder = 'lifestyle-' | append: current -%}
+        {{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}
+      {% else %}
+        {% assign image_box_ratio = slide.settings.image.height | append: ".0" | times: 1 | divided_by: slide.settings.image.width | times: 100 | append: "%" %}
+        {% assign img_url = slide.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+        {% if slide.settings.link != blank %}<a href="{{ slide.settings.link }}">{% endif %}
+          <div class="box-ratio" style="padding-bottom: {{ image_box_ratio }};">
+            <img class="slideshow__image slideshow__image--{{ slide.id }} lazyload lazyload-fade"
+              data-src="{{ img_url }}"
+              data-sizes="auto"
+              data-parent-fit="cover"
+              alt="{{ slide.settings.image.alt | escape }}">
+          </div>
+          <noscript>
+            <img src="{{ slide.settings.image | img_url: '1024x' }}" alt="{{ slide.settings.image.alt | escape }}" class="slideshow__image slideshow__image--{{ slide.id }}">
+          </noscript>
+        {% if slide.settings.link != blank %}</a>{% endif %}
+      {% endif %}
+      <div class="flex-caption slide-{{ slide.id }}">
+        <div class="caption-inners">
+          {% if slide.settings.title != blank %}
+          <h2 class="slide-title">{{ slide.settings.title | escape }}</h2>
+          {% endif %}
+          {% if slide.settings.subheading != blank %}
+          <p class="caption">{{ slide.settings.subheading | escape }}</p>
+          {% endif %}
+          {% if slide.settings.link != blank %}
+          <div class="cta">
+            <a href="{{ slide.settings.link }}">{{ slide.settings.button_text | escape }}</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </li>
+    <style>
+      .flex-caption.slide-{{ slide.id }} {
+        bottom: {{ slide.settings.caption_vertical_position }}%;
+        left: {{ slide.settings.caption_horizontal_position }}%;
+        width: 100%;
+        padding: 0;
+      }
+      .flex-caption.slide-{{ slide.id }} .caption-inners {
+        {% assign bg_color = slide.settings.caption_background %}
+        {% assign caption_opacity = slide.settings.caption_opacity | plus: 0 %}
+        {% if slide.settings.caption_background == 'rgba(0,0,0,0)' %}
+        background: transparent;
+        {% else %}
+        background: {{ bg_color | color_modify: 'alpha', caption_opacity }};
+        {% endif %}
+        display: inline-block;
+        padding: 20px;
+        text-align: {{ slide.settings.text_align }};
+      }
+      .flex-caption.slide-{{ slide.id }} h2.slide-title {
+        color: {{ slide.settings.slide_text_color }};
+        font-size: {{ section.settings.slide_title_size }}px;
+        font-weight:{{ section.settings.slide_title_weight }};
+      }
+      .flex-caption.slide-{{ slide.id }} p {
+        color: {{ slide.settings.slide_text_color }};
+      }
+      .flex-caption.slide-{{ slide.id }} .cta a {
+        color: {{ slide.settings.cta_color }};
+        background: {{ slide.settings.cta_background }};
+        font-size: {{ section.settings.cta_size }}px;
+        font-weight: {{ section.settings.cta_weight }};
+      }
+      .flex-caption.slide-{{ slide.id }} .flex-caption p {
+        font-size: {{ section.settings.caption_size }}px;
+      }
+    </style>

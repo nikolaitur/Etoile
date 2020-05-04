@@ -1,0 +1,172 @@
+<div class="collection-page" data-section-id="{{ section.id }}" data-section-type="collection-section">
+{% assign number = section.settings.products_per_page %}
+{% paginate collection.products by number %}
+
+<h1 class="desktop-6 desktop-push-3 tablet-3 mobile-3">
+  {% if collection.handle == 'all' %}{{ 'collections.general.all_products' | t }}{% else %}{{ collection.title }}{% endif %}
+</h1>
+
+<div id="collection-description" class="desktop-12 tablet-6 mobile-3">
+  <div class="rte">
+    {{ collection.description | remove: "[banner]" }}
+  </div>
+</div>
+
+<div class="clear"></div>
+
+
+<!-- Start Sidebar -->
+{% if section.blocks.size > 0 %}
+  {% include 'collection-sidebar' %}
+{% endif %}
+<!-- End Sidebar -->
+
+
+<div class="{% if section.blocks.size > 0 %}desktop-9 tablet-6{% else %}desktop-12 tablet-6{% endif %} mobile-3">
+
+  {% if section.blocks.size == 0 %}
+    <div id="full-width-filter" class="desktop-12 tablet-6 mobile-3">
+      {% include 'filter' %}
+    </div>
+  {% endif %}
+
+  <div id="product-loop">
+
+    {% for product in collection.products %}
+      {% assign products_per_row = section.settings.products_per_row %}
+      <div id="product-listing-{{ product.id }}" class="product-index {% if products_per_row == 6 %}desktop-2{% cycle ' first', '', '', '', '', ' last' %}{% elsif products_per_row == 4 %}desktop-3{% cycle ' first', '', '', ' last' %}{% elsif products_per_row == 3 %}desktop-4{% cycle ' first', '', ' last' %}{% elsif products_per_row == 5 %}desktop-fifth{% cycle ' first', '', '', '', ' last' %}{% elsif products_per_row == 2 %}desktop-6{% cycle ' first', ' last' %}{% endif %} tablet-half mobile-half" data-alpha="{{ product.title }}" data-price="{{ product.price }}"  data-product-id="{{ product.id }}">
+        {% include 'product-listing' %}
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+
+{% include 'pagination' %}
+
+{% endpaginate %}
+
+</div>
+{% schema %}
+  {
+    "name": "Collection page",
+    "max_blocks":4,
+    "settings": [
+      {
+        "type":      "range",
+        "id":        "products_per_page",
+        "min":       2,
+        "max":       50,
+        "step":      1,
+        "label":     "How many products per page",
+        "default":   30
+      },
+      {
+        "type":      "range",
+        "id":        "products_per_row",
+        "min":       2,
+        "max":       6,
+        "step":      1,
+        "label":     "Products per row",
+        "default":   4
+      },
+      {
+        "type": "header",
+        "content": "Filter with tags"
+      },
+      {
+        "type": "paragraph",
+        "content": "Your customers can filter collections using tags that you have added to your products. [See our setup instructions for these filters](https:\/\/support.weareunderground.com\/article\/78-filter-collections-with-tags)."
+      },
+      {
+        "type": "checkbox",
+        "id": "sort_by",
+        "label": "Show sort by",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sort_dropdown_a_check",
+        "label": "Show first filter",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "filter_1_title",
+        "label": "Filter 1 title"
+      },
+	  {
+        "type": "textarea",
+        "id": "sort_a",
+        "label": "First filter tags"
+      },
+      {
+        "type": "checkbox",
+        "id": "sort_dropdown_b_check",
+        "label": "Show second filter",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "filter_2_title",
+        "label": "Filter 2 title"
+      },
+      {
+        "type": "textarea",
+        "id": "sort_b",
+        "label": "Second filter tags"
+      },
+      {
+        "type": "checkbox",
+        "id": "sort_dropdown_c_check",
+        "label": "Show third filter",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "filter_3_title",
+        "label": "Filter 3 title"
+      },
+      {
+        "type": "textarea",
+        "id": "sort_c",
+        "label": "Third filter tags"
+      }
+    ],
+	"blocks":[
+      {
+         "type":"menu",
+         "name":"Menu",
+         "settings":[
+            {
+               "type": "link_list",
+               "id": "side_nav",
+               "label": "Sidebar menu",
+               "info": "This menu won't show dropdown items"
+            },
+           {
+            "type": "text",
+            "id": "title",
+            "label": "Menu title",
+            "default": "Explore"
+           }
+         ]
+      },
+      {
+         "type":"vendor_list",
+         "name":"Vendor list",
+	       "limit": 1,
+         "settings":[
+          {
+          "type": "text",
+          "id": "shop_by_designer_title",
+          "label": "Vendor list title",
+          "default": "Shop by Designer"
+          }
+         ]
+      }
+    ]
+  }
+
+{% endschema %}

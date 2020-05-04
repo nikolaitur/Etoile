@@ -1,0 +1,90 @@
+<div id="menu" data-section-id="{{ section.id }}" data-section-type="mobile-navigation">
+  <div class="mobile-search-form">
+  <form action="/search" method="get">
+    <input type="text" name="q" id="q" placeholder="{{ 'general.search.placeholder' | t }}" />
+    {% if settings.search_products %}
+    <input type="hidden" name="type" value="product">
+    {% endif %}
+  </form>
+</div>
+  <ul id="accordion">
+    {% assign menu = linklists[section.settings.main_nav] %}
+    {% for link in menu.links %}
+    {% if link.links != blank %}
+    <li class="accordion-toggle" aria-haspopup="true" aria-expanded="false"><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+    <div class="accordion-content">
+      <ul class="sub">
+        {% for sub_link in link.links %}
+        {% if sub_link.links != blank %}
+        <div class="accordion-toggle2" aria-haspopup="true" aria-expanded="false"><a href="{{ sub_link.url }}">{{ sub_link.title | escape }}</a></div>
+        <div class="accordion-content2">
+          <ul class="sub">
+            {% for sub_sub_link in sub_link.links %}
+            <li><a href="{{ sub_sub_link.url }}">{{ sub_sub_link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% else %}
+        <li><a href="{{ sub_link.url }}">{{ sub_link.title | escape }}</a></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% else %}
+    <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if shop.customer_accounts_enabled %}
+    {% if customer  %}
+      <li class="top-level-link">
+        <a href="{{ routes.account_url }}">
+          <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;{{ 'layout.mobile_nav.account' | t }}
+        </a>&nbsp;&nbsp;<i class="fa fa-user-times" aria-hidden="true"></i>&nbsp;&nbsp;{{ 'layout.mobile_nav.logout' | t }}
+      </li>
+      {% else %}
+      <li class="top-level-link"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;<a href="{{ routes.account_login_url }}">{{ 'layout.mobile_nav.login' | t }}</a></li>
+      {% endif %}
+    {% endif %}
+  </ul>
+</div>
+
+<style>
+  .slideout-menu { background: {{ section.settings.background_color }}; }
+  .slideout-menu ul#accordion li, .slideout-menu .accordion-toggle, .slideout-menu .accordion-toggle2 {
+    color: {{ section.settings.link_color }};
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+  .slideout-menu ul#accordion li a, .slideout-menu ul#accordion a {
+    color: {{ section.settings.link_color }} !important;
+  }
+  .accordion-toggle:after, .accordion-toggle2:after { border-left: 1px solid {{ section.settings.border_color }}; }
+</style>
+
+{% schema %}
+{
+    "name": "Mobile navigation",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "main_nav",
+        "label": "Choose main menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color"
+      },
+      {
+        "type": "color",
+        "id": "link_color",
+        "label": "Link color"
+      },
+      {
+        "type": "color",
+        "id": "border_color",
+        "label": "Border color"
+      }
+    ]
+  }
+{% endschema %}
