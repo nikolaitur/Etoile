@@ -2159,6 +2159,19 @@
     "sections": {
       "header": {
         "type": "header",
+        "blocks": {
+          "1588621286937": {
+            "type": "mega_menu",
+            "settings": {
+              "menu_item": "Women",
+              "nav_image": "shopify:\/\/shop_images\/Women_3.png",
+              "link": "shopify:\/\/blogs\/news"
+            }
+          }
+        },
+        "block_order": [
+          "1588621286937"
+        ],
         "settings": {
           "full_width_header": true,
           "show_announcement_text": true,
@@ -2379,7 +2392,9 @@
               "title_text": "Bags",
               "hidden_text": "Shop now",
               "promo_color": "#ffffff",
-              "hidden_color": "#ffffff"
+              "hidden_color": "#ffffff",
+              "heading_bg_color": "rgba(0,0,0,0)",
+              "subheading_bg_color": "rgba(0,0,0,0)"
             }
           },
           "1521604513411-1": {
@@ -2391,7 +2406,9 @@
               "title_text": "Shoes",
               "hidden_text": "Shop now",
               "promo_color": "#ffffff",
-              "hidden_color": "#ffffff"
+              "hidden_color": "#ffffff",
+              "heading_bg_color": "rgba(0,0,0,0)",
+              "subheading_bg_color": "rgba(0,0,0,0)"
             }
           },
           "1521604513411-2": {
@@ -2403,7 +2420,9 @@
               "title_text": "Jeans",
               "hidden_text": "Shop now",
               "promo_color": "#ffffff",
-              "hidden_color": "#ffffff"
+              "hidden_color": "#ffffff",
+              "heading_bg_color": "rgba(0,0,0,0)",
+              "subheading_bg_color": "rgba(0,0,0,0)"
             }
           }
         },
@@ -2512,7 +2531,9 @@
               "title_text": "Our collections",
               "hidden_text": "Shop now",
               "promo_color": "#ffffff",
-              "hidden_color": "#ffffff"
+              "hidden_color": "#ffffff",
+              "heading_bg_color": "#ffffff",
+              "subheading_bg_color": "#ffffff"
             }
           },
           "1588618128427-1": {
@@ -2524,7 +2545,9 @@
               "title_text": "Our collections",
               "hidden_text": "Shop now",
               "promo_color": "#ffffff",
-              "hidden_color": "#ffffff"
+              "hidden_color": "#ffffff",
+              "heading_bg_color": "#ffffff",
+              "subheading_bg_color": "#ffffff"
             }
           }
         },

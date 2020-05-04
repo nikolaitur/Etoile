@@ -52,9 +52,15 @@
       <style>
         .homepage-promo.promo-{{ block.id }} .promo-inner h3 {
           color: {{ block.settings.promo_color }};
+          background: {{ block.settings.heading_bg_color }};
+          width: fit-content;
+          margin: auto;
         }
         .homepage-promo.promo-{{ block.id }} .promo-inner p {
           color: {{ block.settings.hidden_color }};
+          background: {{ block.settings.subheading_bg_color }};
+          width: fit-content;
+          margin: auto;
         }
         .promo-{{ block.id }} .promo-inner { float: none; }
       </style>
@@ -187,6 +193,18 @@
         "type": "color",
         "id": "hidden_color",
         "label": "Subheading color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "heading_bg_color",
+        "label": "Heading Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "subheading_bg_color",
+        "label": "Subheading Background Color",
         "default": "#ffffff"
       }
       ]
