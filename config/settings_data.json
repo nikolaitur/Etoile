@@ -2483,7 +2483,12 @@
               "image": "shopify:\/\/shop_images\/MEN_TEST.png",
               "link": "#",
               "title_text": "",
-              "text": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>"
+              "text": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+              "text_overlay": true,
+              "promo_color": "#ffffff",
+              "hidden_color": "#ffffff",
+              "heading_bg_color": "#ffffff",
+              "subheading_bg_color": "rgba(0,0,0,0)"
             }
           },
           "1521640705228-1": {
@@ -2492,7 +2497,12 @@
               "image": "shopify:\/\/shop_images\/WOMEN_TEST.png",
               "link": "",
               "title_text": "Shop The Look",
-              "text": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>"
+              "text": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+              "text_overlay": false,
+              "promo_color": "#ffffff",
+              "hidden_color": "#000000",
+              "heading_bg_color": "#ffffff",
+              "subheading_bg_color": "rgba(0,0,0,0)"
             }
           }
         },

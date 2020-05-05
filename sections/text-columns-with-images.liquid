@@ -30,12 +30,12 @@
             </noscript>
           {% endif %}
         {% if block.settings.link != blank %}</a>{% endif %}
-        <div class="text-promo-content">
+        <div class="text-promo-content {% if block.settings.text_overlay %}promo-content-overlay{% endif %}">
           {% if block.settings.title_text != blank %}
-            <h3>{{ block.settings.title_text | escape }}</h3>
+            <h3 style="color: {{ block.settings.promo_color }}; background: {{ block.settings.heading_bg_color }};">{{ block.settings.title_text | escape }}</h3>
           {% endif %}
           {% if block.settings.text != blank %}
-            <p>{{ block.settings.text }}</p>
+            <div style="color: {{ block.settings.hidden_color }}; background: {{ block.settings.subheading_bg_color }};">{{ block.settings.text }}</div>
           {% endif %}
         </div>
       </div>
@@ -54,6 +54,9 @@
 <style>
   #text-promo-{{ section.id }} .homepage-text-promo  { text-align: {{ section.settings.align_text }}; }
 </style>
+<style>
+    
+  </style>
 
 
 {% schema %}
@@ -111,6 +114,35 @@
         "id": "text",
         "label": "Text",
         "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+      },
+      {
+        "type": "checkbox",
+        "id": "text_overlay",
+        "label": "Overlay Text"
+      },
+      {
+        "type": "color",
+        "id": "promo_color",
+        "label": "Heading color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "hidden_color",
+        "label": "Subheading color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "heading_bg_color",
+        "label": "Heading Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "subheading_bg_color",
+        "label": "Subheading Background Color",
+        "default": "#ffffff"
       }
       ]
     }
